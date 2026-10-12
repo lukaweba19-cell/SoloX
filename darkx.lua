@@ -1594,6 +1594,11 @@ extra:Button("Auto Chop", function()
     msg("Dark X", S.autoChop and "Auto Chop on" or "off")
     if S.autoChop then task.spawn(function() while S.autoChop do local h=hrp() if h then for _,t in pairs(getTrees()) do if not S.autoChop then break end if t.PrimaryPart and (t.PrimaryPart.Position-h.Position).Magnitude<60 then chop(t) end end end task.wait(1) end end) end
 end)
+extra:Button("Auto Farm", function()
+    S.autoFarm=not S.autoFarm
+    msg("Dark X", S.autoFarm and "Auto Farm on" or "off")
+    if S.autoFarm then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then local h=hrp() if h and ts[1].PrimaryPart then ts[1]:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) end task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
