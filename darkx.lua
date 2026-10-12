@@ -1454,6 +1454,12 @@ extra:Button("Max Land", function()
     if re then re:FireServer("Max Land") end
     msg("Dark X","Max Land")
 end)
+extra:Button("Save Base", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer(game:GetService("Players"):GetPlayers(),0) end
+    msg("Dark X","Save Base success")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
