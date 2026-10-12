@@ -84,7 +84,7 @@ local function turnSaveOff()
         local players = game:GetService("Players"):GetPlayers()
         local target = #players >= 2 and players[2] or players[1]
         donate:InvokeServer(target, 0, slottoload)
-        msg("sent 0 to " .. target.Name)
+        msg("save stopped")
     else
         msg("no donate remote")
     end
@@ -271,7 +271,6 @@ local function makeBtn(text, callback)
 end
 
 makeBtn("Turn Save Off", turnSaveOff)
-makeBtn("Leave Now", leaveNow)
 
 local function toggle()
     minimized = not minimized
@@ -284,4 +283,72 @@ openBtn.MouseButton1Click:Connect(toggle)
 drag(main, top)
 drag(openBtn, openBtn)
 
+local function showInstructions()
+    local en = "How to Use\n• You need a second device or a way to have two Roblox instances logged into the same account\n• Click Stop Save\n• Move whatever you want to dupe to the other person's base\n• On the second instance, go to server list and find any server that's not the one you're currently in and click join\n• It will say another device has started playing and disconnect the session where you were duping\n• On the second device / new server, load your base then go back\n• You need to load your base when you disconnect or else it will fail to dupe"
+    local th = "วิธีใช้\n• คุณต้องมีอุปกรณ์ที่สองหรือวิธีที่จะมี Roblox สองอินสแตนซ์ที่ล็อกอินบัญชีเดียวกัน\n• คลิก Stop Save\n• ย้ายสิ่งที่คุณต้องการดูปไปยังฐานของอีกคน\n• บนอินสแตนซ์ที่สอง ไปที่รายการเซิร์ฟเวอร์และหาเซิร์ฟเวอร์ที่ไม่ใช่เซิร์ฟเวอร์ที่คุณอยู่แล้วคลิกเข้าร่วม\n• มันจะบอกว่าอุปกรณ์อื่นเริ่มเล่นและตัดการเชื่อมต่อเซสชันที่คุณกำลังดูป\n• บนอุปกรณ์ที่สอง / เซิร์ฟเวอร์ใหม่ โหลดฐานของคุณแล้วกลับไป\n• คุณต้องโหลดฐานของคุณเมื่อตัดการเชื่อมต่อ ไม่งั้นจะดูปล้มเหลว"
+    local frame = Instance.new("Frame")
+    frame.Parent = gui
+    frame.BackgroundColor3 = Color3.fromRGB(20, 16, 30)
+    frame.BorderSizePixel = 0
+    frame.Position = UDim2.new(0.5, -200, 0.5, -180)
+    frame.Size = UDim2.new(0, 400, 0, 360)
+    frame.ZIndex = 30
+    local fc = Instance.new("UICorner")
+    fc.CornerRadius = UDim.new(0, 8)
+    fc.Parent = frame
+    local fs = Instance.new("UIStroke")
+    fs.Color = Color3.fromRGB(140, 80, 255)
+    fs.Thickness = 1
+    fs.Parent = frame
+    local title = Instance.new("TextLabel")
+    title.Parent = frame
+    title.BackgroundTransparency = 1
+    title.Position = UDim2.new(0, 12, 0, 8)
+    title.Size = UDim2.new(1, -50, 0, 24)
+    title.Font = Enum.Font.GothamBold
+    title.Text = "SoloX Dupe"
+    title.TextColor3 = Color3.fromRGB(200, 180, 255)
+    title.TextSize = 16
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.ZIndex = 31
+    local close = Instance.new("TextButton")
+    close.Parent = frame
+    close.BackgroundColor3 = Color3.fromRGB(40, 30, 55)
+    close.BorderSizePixel = 0
+    close.Position = UDim2.new(1, -32, 0, 8)
+    close.Size = UDim2.new(0, 24, 0, 24)
+    close.Font = Enum.Font.GothamBold
+    close.Text = "X"
+    close.TextColor3 = Color3.fromRGB(200, 180, 255)
+    close.TextSize = 14
+    close.ZIndex = 31
+    local cc = Instance.new("UICorner")
+    cc.CornerRadius = UDim.new(0, 4)
+    cc.Parent = close
+    close.MouseButton1Click:Connect(function() frame:Destroy() end)
+    local scroll = Instance.new("ScrollingFrame")
+    scroll.Parent = frame
+    scroll.BackgroundTransparency = 1
+    scroll.Position = UDim2.new(0, 8, 0, 40)
+    scroll.Size = UDim2.new(1, -16, 1, -48)
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    scroll.ScrollBarThickness = 4
+    scroll.ZIndex = 31
+    local text = Instance.new("TextLabel")
+    text.Parent = scroll
+    text.BackgroundTransparency = 1
+    text.Size = UDim2.new(1, -8, 0, 0)
+    text.Font = Enum.Font.GothamMedium
+    text.Text = en .. "\n\n" .. th
+    text.TextColor3 = Color3.fromRGB(190, 180, 210)
+    text.TextSize = 12
+    text.TextWrapped = true
+    text.TextXAlignment = Enum.TextXAlignment.Left
+    text.TextYAlignment = Enum.TextYAlignment.Top
+    text.ZIndex = 31
+    text.AutomaticSize = Enum.AutomaticSize.Y
+    scroll.CanvasSize = UDim2.new(0, 0, 0, text.TextBounds.Y + 20)
+end
+
+showInstructions()
 print("SoloX Dupe loaded")
