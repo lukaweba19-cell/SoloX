@@ -872,6 +872,27 @@ extra:Button("Tp All Items", function()
     end
     msg("Dark X","Tp All Selected Item")
 end)
+extra:Button("Mod Sawmill", function()
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    for _,p in pairs(S.selectedSawmill:GetDescendants()) do
+        if p:IsA("BasePart") and S.woodColor then p.Color=S.woodColor end
+    end
+    msg("Dark X","Mod Sawmill")
+end)
+extra:Button("One Unit Cutter", function()
+    if not S.selectedTree then msg("Dark X","select wood first") return end
+    chop(S.selectedTree)
+    msg("Dark X","One Unit Cutter")
+end)
+extra:Button("View Phantom", function()
+    for _,t in pairs(getTrees()) do
+        if t:FindFirstChild("TreeClass") and tostring(t.TreeClass.Value):find("Phantom") then
+            local h=hrp()
+            if h and t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) msg("Dark X","View phantom tree") return end
+        end
+    end
+    msg("Dark X","Not Found Phantom Tree")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
