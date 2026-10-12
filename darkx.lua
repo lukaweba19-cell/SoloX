@@ -1489,6 +1489,12 @@ extra:Button("Auto Buy", function()
         end)
     end
 end)
+extra:Button("Remove Water", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
+    end
+    msg("Dark X","Remove Water")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
