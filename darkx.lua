@@ -1569,6 +1569,14 @@ end)
 extra:Button("Select Color", function()
     msg("Dark X","Select Color")
 end)
+extra:Button("Mod Cut Wood", function()
+    if not S.selectedWood then msg("Dark X","select wood first") return end
+    if not S.woodColor then return end
+    for _,p in pairs(S.selectedWood:GetDescendants()) do
+        if p:IsA("BasePart") then p.Color=S.woodColor end
+    end
+    msg("Dark X","Mod Cut Wood")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
