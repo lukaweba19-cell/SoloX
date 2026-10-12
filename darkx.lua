@@ -258,6 +258,19 @@ land:Button("Stand Plank", function()
     end
     msg("Dark X","Stand Plank")
 end)
+land:Button("Box Sort", function()
+    local items=getOwned()
+    table.sort(items, function(a,b) return a.Name<b.Name end)
+    local h=hrp()
+    if h then for i,m in ipairs(items) do if m.PrimaryPart then m:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4)) end end end
+    msg("Dark X","Box Sort")
+end)
+land:Button("Set Plank Name", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then item.ItemName.Value="Plank" end
+    end
+    msg("Dark X","Set Plank Name")
+end)
 land:Button("Delete", function()
     for _,item in pairs(getOwned()) do item:Destroy() end
     msg("Dark X","click to Delete")
@@ -330,6 +343,16 @@ playerSec:Button("Spawn Vehicle", function()
             end
         end
     end)
+end)
+playerSec:Button("Tp Player", function()
+    local ps=game:GetService("Players"):GetPlayers()
+    if #ps>1 and ps[2].Character and ps[2].Character:FindFirstChild("HumanoidRootPart") then
+        tp(ps[2].Character.HumanoidRootPart.Position)
+    end
+end)
+playerSec:Button("Leave", function()
+    game:GetService("TeleportService"):Teleport(game.PlaceId, player)
+    msg("Dark X","Leave without save")
 end)
 playerSec:Button("Tp Base", function()
     for _,item in pairs(getOwned()) do if item.PrimaryPart then tp(item.PrimaryPart.Position) return end end
