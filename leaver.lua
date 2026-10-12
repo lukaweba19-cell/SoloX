@@ -286,8 +286,8 @@ drag(openBtn, openBtn)
 local instFrame
 local function showInstructions()
     if instFrame then instFrame:Destroy() end
-    local en = "How to Use\n• You need a second device or a way to have two Roblox instances logged into the same account\n• Click Stop Save\n• Move whatever you want to dupe to the other person's base\n• On the second instance, go to server list and find any server that's not the one you're currently in and click join\n• It will say another device has started playing and disconnect the session where you were duping\n• On the second device / new server, load your base then go back\n• You need to load your base when you disconnect or else it will fail to dupe"
     local th = "วิธีใช้\n• คุณต้องมีอุปกรณ์ที่สองหรือวิธีที่จะมี Roblox สองอินสแตนซ์ที่ล็อกอินบัญชีเดียวกัน\n• คลิก Stop Save\n• ย้ายสิ่งที่คุณต้องการดูปไปยังฐานของอีกคน\n• บนอินสแตนซ์ที่สอง ไปที่รายการเซิร์ฟเวอร์และหาเซิร์ฟเวอร์ที่ไม่ใช่เซิร์ฟเวอร์ที่คุณอยู่แล้วคลิกเข้าร่วม\n• มันจะบอกว่าอุปกรณ์อื่นเริ่มเล่นและตัดการเชื่อมต่อเซสชันที่คุณกำลังดูป\n• บนอุปกรณ์ที่สอง / เซิร์ฟเวอร์ใหม่ โหลดฐานของคุณแล้วกลับไป\n• คุณต้องโหลดฐานของคุณเมื่อตัดการเชื่อมต่อ ไม่งั้นจะดูปล้มเหลว"
+    
     instFrame = Instance.new("Frame")
     local frame = instFrame
     frame.Parent = gui
@@ -296,13 +296,16 @@ local function showInstructions()
     frame.Position = UDim2.new(0.5, -140, 0.5, -120)
     frame.Size = UDim2.new(0, 280, 0, 240)
     frame.ZIndex = 30
+    
     local fc = Instance.new("UICorner")
     fc.CornerRadius = UDim.new(0, 8)
     fc.Parent = frame
+    
     local fs = Instance.new("UIStroke")
     fs.Color = Color3.fromRGB(140, 80, 255)
     fs.Thickness = 1
     fs.Parent = frame
+    
     local title = Instance.new("TextLabel")
     title.Parent = frame
     title.BackgroundTransparency = 1
@@ -314,6 +317,7 @@ local function showInstructions()
     title.TextSize = 16
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.ZIndex = 31
+    
     local close = Instance.new("TextButton")
     close.Parent = frame
     close.BackgroundColor3 = Color3.fromRGB(40, 30, 55)
@@ -325,11 +329,14 @@ local function showInstructions()
     close.TextColor3 = Color3.fromRGB(200, 180, 255)
     close.TextSize = 14
     close.ZIndex = 31
+    
     local cc = Instance.new("UICorner")
     cc.CornerRadius = UDim.new(0, 4)
     cc.Parent = close
     close.MouseButton1Click:Connect(function() if instFrame then instFrame:Destroy() instFrame = nil end end)
+    
     drag(frame, frame)
+    
     local scroll = Instance.new("ScrollingFrame")
     scroll.Parent = frame
     scroll.BackgroundTransparency = 1
@@ -338,20 +345,27 @@ local function showInstructions()
     scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
     scroll.ScrollBarThickness = 4
     scroll.ZIndex = 31
+
     local text = Instance.new("TextLabel")
     text.Parent = scroll
     text.BackgroundTransparency = 1
+    text.Position = UDim2.new(0, 0, 0, 0)
     text.Size = UDim2.new(1, -8, 0, 0)
     text.Font = Enum.Font.GothamMedium
-    text.Text = en .. "\n\n" .. th
+    text.Text = th
     text.TextColor3 = Color3.fromRGB(190, 180, 210)
     text.TextSize = 12
     text.TextWrapped = true
     text.TextXAlignment = Enum.TextXAlignment.Left
     text.TextYAlignment = Enum.TextYAlignment.Top
     text.ZIndex = 31
-    text.AutomaticSize = Enum.AutomaticSize.Y
-    scroll.CanvasSize = UDim2.new(0, 0, 0, text.TextBounds.Y + 20)
+
+    task.defer(function()
+        if text and text.Parent then
+            text.Size = UDim2.new(1, -8, 0, text.TextBounds.Y + 20)
+            scroll.CanvasSize = UDim2.new(0, 0, 0, text.TextBounds.Y + 40)
+        end
+    end)
 end
 
 makeBtn("How to Use", showInstructions)
