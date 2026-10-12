@@ -291,6 +291,12 @@ build:Button("Save", function()
     if r then r:InvokeServer(game:GetService("Players"):GetPlayers(), 0) end
     msg("Dark X","Save Base success")
 end)
+build:Button("Get Blueprint", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Open box") end
+    msg("Dark X","Open box")
+end)
 build:Button("Load", function()
     local rs=game:GetService("ReplicatedStorage")
     local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
