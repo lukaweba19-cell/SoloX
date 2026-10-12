@@ -79,9 +79,14 @@ local function leaveNow()
 end
 
 local function turnSaveOff()
-    local slot = player:FindFirstChild("CurrentSaveSlot")
-    local saving = player:FindFirstChild("CurrentlySavingOrLoading")
-    if not slot then msg("no save slot") return end
+    local slot = player:FindFirstChild("CurrentSaveSlot", true)
+    local saving = player:FindFirstChild("CurrentlySavingOrLoading", true)
+    if not slot then
+        local names = {}
+        for _, c in pairs(player:GetChildren()) do table.insert(names, c.Name) end
+        msg("no slot: " .. table.concat(names, ","):sub(1, 40))
+        return
+    end
     if saving then
         while saving.Value do task.wait() end
     end
