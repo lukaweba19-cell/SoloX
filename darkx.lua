@@ -243,6 +243,24 @@ build:Button("Fill All", function()
     if r then r:FireServer("Fill All blueprint") end
     msg("Dark X","Fill All blueprint")
 end)
+build:Button("Fast Load", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer() end
+    msg("Dark X","Fast Load")
+end)
+build:Button("Deload", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer() end
+    msg("Dark X","Deload")
+end)
+build:Button("Slot Save", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer() end
+    msg("Dark X","Slot saved successfully")
+end)
 build:Button("Dupe Slot", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
@@ -334,6 +352,10 @@ world:Button("Remove Water", function()
     for _,p in pairs(workspace:GetDescendants()) do
         if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
     end
+end)
+world:Button("Abort", function()
+    S.autoFarm=false S.autoChop=false
+    msg("Dark X","Abort")
 end)
 world:Button("Anti BlackList", function()
     local rs=game:GetService("ReplicatedStorage")
