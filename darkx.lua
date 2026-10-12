@@ -1250,6 +1250,12 @@ extra:Button("Set Plank Name", function()
     end
     msg("Dark X","Set Plank Name")
 end)
+extra:Button("Stand Plank", function()
+    for _,item in pairs(getOwned()) do
+        if item.PrimaryPart then item.PrimaryPart.Anchored=true end
+    end
+    msg("Dark X","Stand Plank")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
