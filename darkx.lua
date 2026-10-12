@@ -602,6 +602,32 @@ playerSec:Button("Tp Base", function()
     msg("Dark X","no base")
 end)
 
+-- Vehicle
+local vehTab = win:Tab("Vehicle", "0")
+local veh = vehTab:section("Vehicle")
+veh:Button("Spawn", function()
+    msg("Dark X","Click a spawn pad")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t and t.Name:find("Spawn") then
+                local rs=game:GetService("ReplicatedStorage")
+                local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                if re then re:FireServer("Spawn Vehicle") end
+                msg("Dark X","Finished spawning vehicle")
+                c:Disconnect()
+            end
+        end
+    end)
+end)
+veh:Button("Flip", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            v:SetPrimaryPartCFrame(v.PrimaryPart.CFrame * CFrame.Angles(math.pi,0,0))
+        end
+    end
+end)
+
 -- Teleport tab
 local tpTab = win:Tab("TP", "0")
 local tpSec = tpTab:section("Locations")
