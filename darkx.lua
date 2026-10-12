@@ -1143,6 +1143,9 @@ extra:Button("Check Money", function()
         if m then msg("Dark X",tostring(m.Value)) end
     end
 end)
+extra:Button("Hard Dragger", function()
+    msg("Dark X","Hard Dragger on")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
