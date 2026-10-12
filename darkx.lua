@@ -178,6 +178,14 @@ saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.select
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
+axe:Button("Calm Rukiryaxe", function()
+    local axe=getAxe()
+    if not axe then msg("Dark X","need axe") return end
+    if not axe.Name:find("Rukiryaxe") then return end
+    local r=axe:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Calm") end
+    msg("Dark X","Calming Rukiryaxe")
+end)
 axe:Button("Dupe", function()
     if not getAxe() then msg("Dark X","need axe") return end
     local rs=game:GetService("ReplicatedStorage")
@@ -209,6 +217,16 @@ build:Button("Save", function()
     msg("Dark X","Save Base success")
 end)
 build:Button("Load", function() msg("Dark X","load") end)
+build:Button("Auto Buy", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then
+        task.spawn(function()
+            for i=1,10 do r:FireServer("Buy") task.wait(0.5) end
+        end)
+    end
+    msg("Dark X","Auto Buy")
+end)
 build:Button("Load Preview", function()
     if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
     msg("Dark x","load ur file at first")
