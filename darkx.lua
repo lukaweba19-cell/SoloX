@@ -803,6 +803,30 @@ extra:Button("Loop Auto Buy", function()
     if re then task.spawn(function() while true do re:FireServer("Buy") task.wait(0.5) end end) end
     msg("Dark X","Loop Auto Buy")
 end)
+extra:Button("Sold Sign Dupe", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Sold Sign Dupe") end
+    msg("Dark X","Sold Sign Dupe")
+end)
+extra:Button("Auto Farm Sold Sign", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Take down sold sign") end
+        end
+    end
+    msg("Dark X","Auto Farm Sold Sign")
+end)
+extra:Button("Sell Sold Sign", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","Sell Sold Sign")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
