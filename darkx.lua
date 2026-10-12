@@ -1311,6 +1311,12 @@ extra:Button("Floor2 Check", function()
     for _,item in pairs(getOwned()) do if item.Name:find("Floor2") then has=true break end end
     if not has then msg("Dark x","u need to buy floor2") else msg("Dark x","have floor2") end
 end)
+extra:Button("Open Box", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Open box") end
+    msg("Dark X","Open box")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
