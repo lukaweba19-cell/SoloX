@@ -1442,6 +1442,12 @@ extra:Button("Take Down Sold Sign", function()
     end
     msg("Dark X","Take down sold sign")
 end)
+extra:Button("Free Land", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Free Land") end
+    msg("Dark X","Free Land")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
