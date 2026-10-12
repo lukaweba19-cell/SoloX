@@ -1641,6 +1641,10 @@ extra:Button("Pick Up Axe", function()
     end
     msg("Dark X","Pick up tool")
 end)
+extra:Button("Max", function()
+    if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end end
+    msg("Dark X","Max")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
