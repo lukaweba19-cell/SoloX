@@ -1108,6 +1108,12 @@ extra:Button("Dupe Slot", function()
     if rf then rf:InvokeServer() end
     msg("Dark X","Dupe Slot")
 end)
+extra:Button("Land Art", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Land Art") end
+    msg("Dark X","Land Art")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
