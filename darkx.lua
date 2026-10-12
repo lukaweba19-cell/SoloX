@@ -379,6 +379,18 @@ land:Button("Auto Farm Sold Sign", function()
     end
     msg("Dark X","Auto Farm Sold Sign")
 end)
+land:Button("Sell Sold Sign", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","Sell Sold Sign")
+end)
+land:Button("Click to Fill", function()
+    msg("Dark X","Click to Fill")
+end)
 land:Button("Sold Sign Dupe", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
@@ -500,6 +512,15 @@ playerSec:Button("Spawn Vehicle", function()
                 msg("Dark X","Finished spawning vehicle")
                 c:Disconnect()
             end
+        end
+    end)
+end)
+playerSec:Button("Set Position", function()
+    msg("Dark x","u need set Position")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then S.setPos=t.Position msg("Dark X","position set") c:Disconnect() end
         end
     end)
 end)
