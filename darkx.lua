@@ -1599,6 +1599,18 @@ extra:Button("Auto Farm", function()
     msg("Dark X", S.autoFarm and "Auto Farm on" or "off")
     if S.autoFarm then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then local h=hrp() if h and ts[1].PrimaryPart then ts[1]:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) end task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
 end)
+extra:Button("Select Wood", function()
+    msg("Dark X","click wood")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then
+                local m=t:FindFirstAncestorOfClass("Model")
+                if m and m:FindFirstChild("TreeClass") then S.selectedWood=m msg("Dark X","selected") c:Disconnect() end
+            end
+        end
+    end)
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
