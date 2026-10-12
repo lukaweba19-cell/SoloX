@@ -163,7 +163,16 @@ saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.select
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
-axe:Button("Dupe", function() if not getAxe() then msg("Dark X","need axe") return end msg("Dark X","save slot") end)
+axe:Button("Dupe", function()
+    if not getAxe() then msg("Dark X","need axe") return end
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then
+        local ok=pcall(function() r:InvokeServer() end)
+        if not ok then msg("Dark X","You need to own the power to be able to dupe it") return end
+    end
+    msg("Dark X","now u can save the slot")
+end)
 axe:Button("Pick Up", function()
     for _,item in pairs(workspace:GetChildren()) do
         local owner=item:FindFirstChild("Owner")
@@ -185,6 +194,12 @@ build:Button("Save", function()
     msg("Dark X","Save Base success")
 end)
 build:Button("Load", function() msg("Dark X","load") end)
+build:Button("Open Box", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Open box") end
+    msg("Dark X","Open box")
+end)
 local land = buildTab:section("Land")
 land:Button("Free Land", function() msg("Dark X","free land") end)
 land:Button("Max Land", function() msg("Dark X","max land") end)
