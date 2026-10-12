@@ -1072,6 +1072,15 @@ extra:Button("Plank Size 1", function()
     end
     msg("Dark X","Make Selected Plank Size To 1")
 end)
+extra:Button("Sell Plank", function()
+    for _,item in pairs(getOwned()) do
+        if item.Name:find("Plank") or (item:FindFirstChild("ItemName") and tostring(item.ItemName.Value):find("Plank")) then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","click to sell plank")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
