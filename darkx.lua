@@ -1611,6 +1611,18 @@ extra:Button("Select Wood", function()
         end
     end)
 end)
+extra:Button("Select Sawmill", function()
+    msg("Dark X","click sawmill")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then
+                local m=t:FindFirstAncestorOfClass("Model")
+                if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","selected") c:Disconnect() end
+            end
+        end
+    end)
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
