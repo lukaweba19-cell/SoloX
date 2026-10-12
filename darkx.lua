@@ -962,6 +962,18 @@ end)
 extra:Button("Hard Dragger", function()
     msg("Dark X","Hard Dragger on")
 end)
+extra:Button("Auto Buy All BluePrints", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Auto Buy All BluePrints") end
+    msg("Dark X","Auto Buy All BluePrints")
+end)
+extra:Button("Get Blueprint Tool", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Open box") end
+    msg("Dark X","Get Blueprint Tool")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
