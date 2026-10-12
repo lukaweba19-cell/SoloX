@@ -1512,6 +1512,10 @@ extra:Button("Inf Jump", function()
     end)
     msg("Dark X","Inf Jump")
 end)
+extra:Button("Zoom", function()
+    player.CameraMaxZoomDistance=500
+    msg("Dark X","Zoom Distance")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
