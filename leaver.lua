@@ -309,26 +309,27 @@ scroll.BackgroundTransparency = 1
 scroll.Position = UDim2.new(0, 8, 0, 40)
 scroll.Size = UDim2.new(1, -16, 1, -48)
 scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-scroll.ScrollBarThickness = 6
+scroll.ScrollBarThickness = 4
 scroll.ZIndex = 31
-local scrollLayout = Instance.new("UIListLayout")
-scrollLayout.Parent = scroll
-scrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
 local text = Instance.new("TextLabel")
 text.Parent = scroll
 text.BackgroundTransparency = 1
-text.Size = UDim2.new(1, -10, 0, 0)
+text.Position = UDim2.new(0, 0, 0, 0)
+text.Size = UDim2.new(1, -8, 0, 0)
 text.Font = Enum.Font.GothamMedium
-text.Text = en .. "\n\n" + th -- handled safely below
 text.Text = en .. "\n\n" .. th
 text.TextColor3 = Color3.fromRGB(190, 180, 210)
 text.TextSize = 12
 text.TextWrapped = true
 text.TextXAlignment = Enum.TextXAlignment.Left
 text.TextYAlignment = Enum.TextYAlignment.Top
-text.AutomaticSize = Enum.AutomaticSize.Y
 text.ZIndex = 31
+task.defer(function()
+if text and text.Parent then
+text.Size = UDim2.new(1, -8, 0, text.TextBounds.Y + 20)
+scroll.CanvasSize = UDim2.new(0, 0, 0, text.TextBounds.Y + 40)
+end
+end)
 end
 makeBtn("How to Use", showInstructions)
 print("SoloX Dupe loaded")
