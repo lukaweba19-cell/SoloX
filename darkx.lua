@@ -200,6 +200,22 @@ build:Button("Save", function()
     msg("Dark X","Save Base success")
 end)
 build:Button("Load", function() msg("Dark X","load") end)
+build:Button("Load Preview", function()
+    if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
+    msg("Dark x","load ur file at first")
+end)
+build:Button("Select Blueprint", function()
+    msg("Dark x","select blueprint at first")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then
+                local m=t:FindFirstAncestorOfClass("Model")
+                if m then S.selectedBlueprint=m msg("Dark x","selected") c:Disconnect() end
+            end
+        end
+    end)
+end)
 build:Button("Open Box", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
