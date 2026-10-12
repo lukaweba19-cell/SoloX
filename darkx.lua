@@ -1675,6 +1675,14 @@ extra:Button("Spawn", function()
     local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
     if re then re:FireServer("Spawn") end
 end)
+extra:Button("Flip", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            v:SetPrimaryPartCFrame(v.PrimaryPart.CFrame * CFrame.Angles(math.pi,0,0))
+        end
+    end
+    msg("Dark X","Flip")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
