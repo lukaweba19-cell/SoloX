@@ -999,6 +999,29 @@ extra:Button("Auto Pick Up", function()
     end
     msg("Dark X","Auto Pick Up Axe")
 end)
+extra:Button("Spawn Vehicle", function()
+    msg("Dark X","Click a spawn pad")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t and (t.Name:find("Spawn") or t.Name:find("Pad")) then
+                local rs=game:GetService("ReplicatedStorage")
+                local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                if re then re:FireServer("Spawn Vehicle") end
+                msg("Dark X","Finished spawning vehicle")
+                c:Disconnect()
+            end
+        end
+    end)
+end)
+extra:Button("Flip Vehicle", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            v:SetPrimaryPartCFrame(v.PrimaryPart.CFrame * CFrame.Angles(math.pi,0,0))
+        end
+    end
+    msg("Dark X","Flip Vehicle")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
