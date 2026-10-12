@@ -167,6 +167,15 @@ saw:Button("Select", function()
     local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","selected") c:Disconnect() end end end end)
 end)
 saw:Button("Max", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end end end)
+saw:Button("Mod Sawmill", function()
+    if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
+    if S.woodColor then
+        for _,p in pairs(S.selectedSawmill:GetDescendants()) do
+            if p:IsA("BasePart") then p.Color=S.woodColor end
+        end
+    end
+    msg("Dark X","Mod Sawmill")
+end)
 saw:Button("Max Settings", function()
     if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
     for _,v in pairs(S.selectedSawmill:GetDescendants()) do
@@ -198,6 +207,10 @@ saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.select
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
+axe:Button("Select Axe", function()
+    local axe=getAxe()
+    if axe then S.selectedAxe=axe msg("Dark X","Select the Axe") else msg("Dark X","need axe") end
+end)
 axe:Button("Dupe Power", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
@@ -489,6 +502,19 @@ playerSec:Button("Spawn Vehicle", function()
             end
         end
     end)
+end)
+playerSec:Button("Tp All Items", function()
+    local h=hrp()
+    if h then
+        local i=0
+        for _,item in pairs(getOwned()) do
+            if item.PrimaryPart then
+                item:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4))
+                i=i+1
+            end
+        end
+    end
+    msg("Dark X","Tp All Selected Item")
 end)
 playerSec:Button("Tp Player", function()
     local ps=game:GetService("Players"):GetPlayers()
