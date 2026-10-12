@@ -97,8 +97,11 @@ woodActions:Button("Mod Wood", function()
                 local m=t:FindFirstAncestorOfClass("Model")
                 if m and m:FindFirstChild("TreeClass") then
                     S.selectedWood=m
-                    msg("Dark X","wood selected")
                     c:Disconnect()
+                    if S.selectedSawmill.PrimaryPart and m.PrimaryPart then
+                        m:SetPrimaryPartCFrame(S.selectedSawmill.PrimaryPart.CFrame * CFrame.new(0, 2, -5))
+                        msg("Dark X","tree at sawmill")
+                    end
                 end
             end
         end
