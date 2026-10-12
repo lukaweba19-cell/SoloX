@@ -97,14 +97,46 @@ woodActions:Button("Mod Wood", function()
             if t then
                 local m=t:FindFirstAncestorOfClass("Model")
                 if m and m:FindFirstChild("TreeClass") then
-                    local tc=m.TreeClass.Value
-                    if tc:find("Spooky") or tc:find("Phantom") then msg("Dark X","u cant mod this wood") c:Disconnect() return end
-                    S.selectedWood=m
-                    local adorn=m.PrimaryPart or m:FindFirstChildWhichIsA("BasePart")
-                    if adorn then
-                        local box=Instance.new("BoxHandleAdornment",adorn)
-                        box.Adornee=adorn box.Size=adorn.Size*1.1 box.Color3=Color3.fromRGB(0,255,0) box.Transparency=0.5
+                    local tc=tostring(m.TreeClass.Value)
+                    if tc~="Pine" and tc~="Fir" then msg("Dark X","u cant mod this wood") c:Disconnect() return end
+                    local sections=0
+                    local target=nil
+                    for _,ch in pairs(m:GetChildren()) do
+                        if ch.Name=="WoodSection" then
+                            sections=sections+1
+                            local id=ch:FindFirstChild("ID")
+                            local cids=ch:FindFirstChild("ChildIDs")
+                            local pid=ch:FindFirstChild("ParentID")
+                            if id and id.Value==1 and cids and #cids:GetChildren()==0 and pid and pid.Value==1 then
+                                target=ch
+                            end
+                        end
                     end
+                    if not target then msg("Dark X","u cant mod this wood") c:Disconnect() return end
+                    local box=Instance.new("BoxHandleAdornment",target)
+                    box.Name="Selection" box.Adornee=target box.AlwaysOnTop=true box.Size=target.Size
+                    box.Transparency=0 box.Color=BrickColor.new("Lime green")
+                    local h=hrp()
+                    if h and m:FindFirstChild("WoodSection") then h.CFrame=m.WoodSection.CFrame end
+                    local drag=RS:FindFirstChild("Interaction") and RS.Interaction:FindFirstChild("ClientIsDragging")
+                    if drag then
+                        for i=1,20 do
+                            drag:FireServer(m)
+                            m:PivotTo(CFrame.new(-1406,312,-24))
+                            task.wait()
+                        end
+                        if h then h.CFrame=target.CFrame end
+                        drag:FireServer(m)
+                        target:PivotTo(CFrame.new(315,5,85.5))
+                        task.wait()
+                    end
+                    local ev=m:FindFirstChild("CutEvent")
+                    if ev then
+                        local axe=getAxe()
+                        local remote=RS:FindFirstChild("Interaction") and RS.Interaction:FindFirstChild("RemoteProxy")
+                        if remote and axe then remote:FireServer(ev,{tool=axe,hitPoints=0.3,sectionId=1}) end
+                    end
+                    if h then h.CFrame=h.CFrame end
                     msg("Dark X","modded")
                     c:Disconnect()
                 end
