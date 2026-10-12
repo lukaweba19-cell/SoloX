@@ -275,6 +275,16 @@ build:Button("Load Preview", function()
     if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
     msg("Dark x","load ur file at first")
 end)
+build:Button("Get Blueprint Tool", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Open box") end
+    msg("Dark X","Get Blueprint Tool")
+end)
+build:Button("Execute Build", function()
+    if not S.selectedBlueprint then msg("Dark x","select blueprint at first") return end
+    msg("Dark x","Click Build if u already build done and fill it then click this button again")
+end)
 build:Button("Get All Blueprint", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
