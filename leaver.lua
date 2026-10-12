@@ -8,9 +8,35 @@ local RS = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local minimized = false
 
-local function msg(t, m)
-    pcall(function()
-        game:GetService("StarterGui"):SetCore("SendNotification", {Title=t, Text=m, Duration=4})
+local function msg(text)
+    local n = Instance.new("Frame")
+    n.Parent = gui
+    n.BackgroundColor3 = Color3.fromRGB(30, 20, 45)
+    n.BorderSizePixel = 0
+    n.Position = UDim2.new(0.5, -120, 0, -40)
+    n.Size = UDim2.new(0, 240, 0, 36)
+    n.ZIndex = 20
+    local nc = Instance.new("UICorner")
+    nc.CornerRadius = UDim.new(0, 6)
+    nc.Parent = n
+    local ns = Instance.new("UIStroke")
+    ns.Color = Color3.fromRGB(140, 80, 255)
+    ns.Thickness = 1
+    ns.Parent = n
+    local nt = Instance.new("TextLabel")
+    nt.Parent = n
+    nt.BackgroundTransparency = 1
+    nt.Size = UDim2.new(1, 0, 1, 0)
+    nt.Font = Enum.Font.GothamMedium
+    nt.Text = text
+    nt.TextColor3 = Color3.fromRGB(200, 180, 255)
+    nt.TextSize = 13
+    nt.ZIndex = 21
+    TweenService:Create(n, TweenInfo.new(0.3), {Position = UDim2.new(0.5, -120, 0, 12)}):Play()
+    task.delay(3, function()
+        TweenService:Create(n, TweenInfo.new(0.3), {Position = UDim2.new(0.5, -120, 0, -40)}):Play()
+        task.wait(0.3)
+        n:Destroy()
     end)
 end
 
@@ -32,19 +58,18 @@ local function leaveWithoutSave()
                 local target = players[2] or players[1]
                 local slot = data and data:FindFirstChild("CurrentSaveSlot") and data.CurrentSaveSlot.Value or 1
                 donate:InvokeServer(target, 0, slot)
-                msg("Dark X", "Save Base success")
-                msg("Dark X", "u have 8mins to give items")
+                msg("save turned off")
                 return
             end
         end
     end
-    msg("Dark X", "Leave without save")
+    msg("save turned off")
 end
 
 local function leaveNow()
     local req = request or (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
     if not req then
-        msg("Dark X", "no request")
+        msg("no request")
         return
     end
     local ok, res = pcall(function()
@@ -54,7 +79,7 @@ local function leaveNow()
         })
     end)
     if not ok or not res or not res.Body then
-        msg("Dark X", "request failed")
+        msg("request failed")
         return
     end
     local data = HttpService:JSONDecode(res.Body)
@@ -68,12 +93,12 @@ local function leaveNow()
         if #servers > 0 then
             local id = servers[math.random(1, #servers)]
             TeleportService:TeleportToPlaceInstance(game.PlaceId, id, player)
-            msg("Dark X", "Leaving...")
+            msg("leaving...")
             return
         end
     end
     TeleportService:Teleport(game.PlaceId, player)
-    msg("Dark X", "Leave now")
+    msg("leaving...")
 end
 
 local function drag(frame, hold)
@@ -172,7 +197,7 @@ title.BackgroundTransparency = 1
 title.Position = UDim2.new(0, 12, 0, 0)
 title.Size = UDim2.new(1, -80, 1, 0)
 title.Font = Enum.Font.GothamBold
-title.Text = "Leaver"
+title.Text = "SoloX Dupe"
 title.TextColor3 = Color3.fromRGB(220, 220, 230)
 title.TextSize = 14
 title.TextXAlignment = Enum.TextXAlignment.Left
