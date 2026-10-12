@@ -1402,6 +1402,13 @@ extra:Button("One Unit Cutter", function()
     chop(S.selectedTree)
     msg("Dark X","One Unit Cutter")
 end)
+extra:Button("Mod Sawmill", function()
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    for _,p in pairs(S.selectedSawmill:GetDescendants()) do
+        if p:IsA("BasePart") and S.woodColor then p.Color=S.woodColor end
+    end
+    msg("Dark X","Mod Sawmill")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
