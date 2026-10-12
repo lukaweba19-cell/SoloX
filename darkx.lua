@@ -727,5 +727,34 @@ local tpTab = win:Tab("TP", "0")
 local tpSec = tpTab:section("Locations")
 for name, pos in pairs(locs) do tpSec:Button(name, function() tp(pos) end) end
 
+
+-- Extra features
+local extraTab = win:Tab("Extra", "0")
+local extra = extraTab:section("Extra")
+extra:Button("Auto Filler", function()
+    msg("Dark X","Auto Filler")
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Fill") end
+end)
+extra:Button("Hard Dragger", function() msg("Dark X","Hard Dragger") end)
+extra:Button("Anti BlackList", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Anti BlackList") end
+    msg("Dark X","Anti BlackList")
+end)
+extra:Button("Check Money", function()
+    local ls=player:FindFirstChild("leaderstats")
+    if ls then
+        local m=ls:FindFirstChild("Money") or ls:FindFirstChild("Cash")
+        if m then msg("Dark X",tostring(m.Value)) end
+    end
+end)
+extra:Button("Abort", function()
+    S.autoFarm=false S.autoChop=false S.autoBuy=false
+    msg("Dark X","Abort")
+end)
+
 print("Dark X loaded")
 end
