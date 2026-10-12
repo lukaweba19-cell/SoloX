@@ -293,8 +293,8 @@ local function showInstructions()
     frame.Parent = gui
     frame.BackgroundColor3 = Color3.fromRGB(20, 16, 30)
     frame.BorderSizePixel = 0
-    frame.Position = UDim2.new(0.5, -200, 0.5, -180)
-    frame.Size = UDim2.new(0, 400, 0, 360)
+    frame.Position = UDim2.new(0.5, -140, 0.5, -120)
+    frame.Size = UDim2.new(0, 280, 0, 240)
     frame.ZIndex = 30
     local fc = Instance.new("UICorner")
     fc.CornerRadius = UDim.new(0, 8)
