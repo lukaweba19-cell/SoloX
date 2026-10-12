@@ -1669,6 +1669,12 @@ extra:Button("Night", function()
     Lighting.ClockTime=0
     msg("Dark X","Night")
 end)
+extra:Button("Spawn", function()
+    msg("Dark X","Spawn")
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Spawn") end
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
