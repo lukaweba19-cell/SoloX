@@ -7,8 +7,10 @@ local RS = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
 local minimized = false
+local gui
 
 local function msg(text)
+    if not gui then return end
     local n = Instance.new("Frame")
     n.Parent = gui
     n.BackgroundColor3 = Color3.fromRGB(30, 20, 45)
@@ -34,56 +36,26 @@ local function msg(text)
     nt.ZIndex = 21
     TweenService:Create(n, TweenInfo.new(0.3), {Position = UDim2.new(0.5, -120, 0, 12)}):Play()
     task.delay(3, function()
-        TweenService:Create(n, TweenInfo.new(0.3), {Position = UDim2.new(0.5, -120, 0, -40)}):Play()
-        task.wait(0.3)
-        n:Destroy()
+        if n and n.Parent then
+            TweenService:Create(n, TweenInfo.new(0.3), {Position = UDim2.new(0.5, -120, 0, -40)}):Play()
+            task.wait(0.3)
+            n:Destroy()
+        end
     end)
-end
-
-local function leaveWithoutSave()
-    local data = player:FindFirstChild("PlayerData") or player:FindFirstChild("Data")
-    if data then
-        local saving = data:FindFirstChild("CurrentlySavingOrLoading")
-        if saving then
-            while saving.Value do task.wait() end
-        end
-    end
-    local trans = RS:FindFirstChild("Transactions")
-    if trans then
-        local cts = trans:FindFirstChild("ClientToServer")
-        if cts then
-            local donate = cts:FindFirstChild("Donate")
-            if donate then
-                local players = Players:GetPlayers()
-                local target = players[2] or players[1]
-                local slot = data and data:FindFirstChild("CurrentSaveSlot") and data.CurrentSaveSlot.Value or 1
-                donate:InvokeServer(target, 0, slot)
-                msg("save turned off")
-                return
-            end
-        end
-    end
-    msg("save turned off")
 end
 
 local function leaveNow()
     local req = request or (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
-    if not req then
-        msg("no request")
-        return
-    end
+    if not req then msg("no request") return end
     local ok, res = pcall(function()
         return req({
             Url = string.format("https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=Asc&limit=100", game.PlaceId),
             Method = "GET"
         })
     end)
-    if not ok or not res or not res.Body then
-        msg("request failed")
-        return
-    end
-    local data = HttpService:JSONDecode(res.Body)
-    if data and data.data and #data.data > 0 then
+    if not ok or not res or not res.Body then msg("request failed") return end
+    local ok2, data = pcall(function() return HttpService:JSONDecode(res.Body) end)
+    if ok2 and data and data.data and #data.data > 0 then
         local servers = {}
         for _, s in pairs(data.data) do
             if s.id ~= game.JobId and s.playing < s.maxPlayers then
@@ -91,14 +63,50 @@ local function leaveNow()
             end
         end
         if #servers > 0 then
-            local id = servers[math.random(1, #servers)]
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, id, player)
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], player)
             msg("leaving...")
             return
         end
     end
     TeleportService:Teleport(game.PlaceId, player)
     msg("leaving...")
+end
+
+local function turnSaveOff()
+    local data = player:FindFirstChild("PlayerData") or player:FindFirstChild("Data")
+    if not data then msg("no player data") return end
+    local slot = data:FindFirstChild("CurrentSaveSlot")
+    local saving = data:FindFirstChild("CurrentlySavingOrLoading")
+    if saving then
+        while saving.Value do task.wait() end
+    end
+    local trans = RS:FindFirstChild("Transactions")
+    if not trans then msg("no transactions") return end
+    local cts = trans:FindFirstChild("ClientToServer")
+    if not cts then msg("no clienttoserver") return end
+    local donate = cts:FindFirstChild("Donate")
+    if not donate then msg("no donate") return end
+    local players = Players:GetPlayers()
+    local target = #players >= 2 and players[2] or players[1]
+    local slotVal = slot and slot.Value or 1
+    local ok, err = pcall(function()
+        donate:InvokeServer(target, 0, slotVal)
+    end)
+    if not ok then msg("donate failed") return end
+    msg("save turned off")
+    local startMin = os.date("*t").min
+    local targetMin = startMin + 8
+    if targetMin >= 60 then targetMin = targetMin - 60 end
+    task.spawn(function()
+        while true do
+            task.wait(1)
+            local now = os.date("*t").min
+            if (targetMin > startMin and now >= targetMin) or (targetMin < startMin and (now >= targetMin or now < startMin)) then
+                leaveNow()
+                break
+            end
+        end
+    end)
 end
 
 local function drag(frame, hold)
@@ -124,8 +132,8 @@ local function drag(frame, hold)
     end)
 end
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "Leaver"
+gui = Instance.new("ScreenGui")
+gui.Name = "SoloXDupe"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = game:GetService("CoreGui")
@@ -251,16 +259,13 @@ local function makeBtn(text, callback)
     btn.TextColor3 = Color3.fromRGB(210, 210, 220)
     btn.TextSize = 13
     btn.AutoButtonColor = false
-
     local btnC = Instance.new("UICorner")
     btnC.CornerRadius = UDim.new(0, 6)
     btnC.Parent = btn
-
     local btnStroke = Instance.new("UIStroke")
     btnStroke.Color = Color3.fromRGB(50, 50, 60)
     btnStroke.Thickness = 1
     btnStroke.Parent = btn
-
     btn.MouseEnter:Connect(function()
         TweenService:Create(btn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(38, 38, 48)}):Play()
     end)
@@ -271,7 +276,7 @@ local function makeBtn(text, callback)
     return btn
 end
 
-makeBtn("Turn Save Off", leaveWithoutSave)
+makeBtn("Turn Save Off", turnSaveOff)
 makeBtn("Leave Now", leaveNow)
 
 local function toggle()
@@ -282,8 +287,7 @@ local function toggle()
 end
 
 openBtn.MouseButton1Click:Connect(toggle)
-
 drag(main, top)
 drag(openBtn, openBtn)
 
-print("Leaver loaded")
+print("SoloX Dupe loaded")
