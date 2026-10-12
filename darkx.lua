@@ -104,6 +104,7 @@ local colors = {
 local win = library:new("Dark X")
 local woodTab = win:Tab("Wood", "0")
 local woodSec = woodTab:section("Actions")
+print("woodSec type:", type(woodSec), "has Button:", woodSec.Button ~= nil)
 local woodColor = woodTab:section("Colors")
 local sawTab = win:Tab("Sawmill", "0")
 local sawSec = sawTab:section("Sawmill")
