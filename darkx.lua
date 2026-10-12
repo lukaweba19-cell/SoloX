@@ -1357,6 +1357,14 @@ extra:Button("Spawn Vehicle", function()
         end
     end)
 end)
+extra:Button("Flip Vehicle", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            v:SetPrimaryPartCFrame(v.PrimaryPart.CFrame * CFrame.Angles(math.pi,0,0))
+        end
+    end
+    msg("Dark X","Flip Vehicle")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
