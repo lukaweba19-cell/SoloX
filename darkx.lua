@@ -1054,6 +1054,11 @@ extra:Button("View Phantom Tree", function()
     end
     msg("Dark X","Not Found Phantom Tree")
 end)
+extra:Button("One Unit Cutter", function()
+    if not S.selectedTree then msg("Dark X","select wood first") return end
+    chop(S.selectedTree)
+    msg("Dark X","One Unit Cutter")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
