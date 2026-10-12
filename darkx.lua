@@ -1269,6 +1269,10 @@ extra:Button("Tp All Items", function()
     end
     msg("Dark X","Tp All Selected Item")
 end)
+extra:Button("Select Axe", function()
+    local axe=getAxe()
+    if axe then S.selectedAxe=axe msg("Dark X","Select the Axe") else msg("Dark X","need axe") end
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
