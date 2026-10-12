@@ -355,5 +355,4 @@ local function showInstructions()
 end
 
 makeBtn("How to Use", showInstructions)
-showInstructions()
 print("SoloX Dupe loaded")
