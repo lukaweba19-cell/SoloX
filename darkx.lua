@@ -1563,6 +1563,12 @@ extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
 end)
+extra:Button("Select Wood Type", function()
+    msg("Dark X","Select Wood Type")
+end)
+extra:Button("Select Color", function()
+    msg("Dark X","Select Color")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
