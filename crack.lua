@@ -1,5 +1,15 @@
 local dumps = {}
 
+local oldChar
+oldChar = hookfunction(string.char, function(...)
+    local res = oldChar(...)
+    if type(res) == "string" and #res > 20 then
+        table.insert(dumps, res)
+        writefile("str_" .. #dumps .. ".txt", res)
+    end
+    return res
+end)
+
 local oldLoad
 oldLoad = hookfunction(loadstring, function(src, ...)
     if type(src) == "string" and #src > 50 then
