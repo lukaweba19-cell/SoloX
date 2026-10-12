@@ -158,6 +158,12 @@ saw:Button("Select", function()
     local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","selected") c:Disconnect() end end end end)
 end)
 saw:Button("Max", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end end end)
+saw:Button("Floor2", function()
+    local has=false
+    for _,item in pairs(getOwned()) do if item.Name:find("Floor2") then has=true break end end
+    if not has then msg("Dark x","u need to buy floor2") return end
+    msg("Dark X","Floor2")
+end)
 saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end end end end)
 
 -- Axe tab
@@ -227,6 +233,21 @@ end)
 world:Button("No Fog", function() Lighting.FogEnd=100000 end)
 local playerSec = worldTab:section("Player")
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
+playerSec:Button("Spawn Vehicle", function()
+    msg("Dark X","Click a spawn pad")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t and t.Name:find("Spawn") then
+                local rs=game:GetService("ReplicatedStorage")
+                local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                if r then r:FireServer("Spawn") end
+                msg("Dark X","Finished spawning vehicle")
+                c:Disconnect()
+            end
+        end
+    end)
+end)
 playerSec:Button("Tp Base", function()
     for _,item in pairs(getOwned()) do if item.PrimaryPart then tp(item.PrimaryPart.Position) return end end
     msg("Dark X","no base")
