@@ -1200,6 +1200,12 @@ extra:Button("Get Blueprint Tool", function()
     if re then re:FireServer("Open box") end
     msg("Dark X","Get Blueprint Tool")
 end)
+extra:Button("Sold Sign Dupe", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Sold Sign Dupe") end
+    msg("Dark X","Sold Sign Dupe")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
