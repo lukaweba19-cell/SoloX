@@ -1577,6 +1577,13 @@ extra:Button("Mod Cut Wood", function()
     end
     msg("Dark X","Mod Cut Wood")
 end)
+extra:Button("Bring Tree", function()
+    local ts=getTrees() local h=hrp()
+    if not h or #ts==0 then msg("Dark X","not find tree") return end
+    local best,d=nil,math.huge
+    for _,t in pairs(ts) do if t.PrimaryPart then local dd=(t.PrimaryPart.Position-h.Position).Magnitude if dd<d then best,d=t,dd end end end
+    if best then S.selectedTree=best local h=hrp() if h and best.PrimaryPart then best:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) end msg("Dark X","brought") end
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
