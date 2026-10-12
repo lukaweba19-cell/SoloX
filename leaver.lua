@@ -45,10 +45,6 @@ local function msg(text)
 end
 
 local function leaveNow()
-    pcall(function()
-        local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
-        if ping then ping:InvokeServer() end
-    end)
     player:Destroy()
     msg("leaving...")
 end
