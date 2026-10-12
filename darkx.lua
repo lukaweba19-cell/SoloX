@@ -284,6 +284,23 @@ world:Toggle("Always Night", false, function(s)
     if s then task.spawn(function() while s do Lighting.ClockTime=0 task.wait(1) end end) end
 end)
 world:Button("No Fog", function() Lighting.FogEnd=100000 end)
+world:Button("Remove Water", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
+    end
+end)
+world:Button("Remove Boulders", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p.Name:find("Boulder") or p.Name:find("Rock") then p:Destroy() end
+    end
+end)
+world:Button("Walk Water", function()
+    local p=workspace:FindFirstChild("WaterWalk")
+    if p then p:Destroy() else
+        p=Instance.new("Part",workspace) p.Name="WaterWalk" p.Size=Vector3.new(2000,1,2000)
+        p.Anchored=true p.CanCollide=true p.Transparency=1 p.Position=Vector3.new(0,0,0)
+    end
+end)
 local playerSec = worldTab:section("Player")
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
 playerSec:Button("Spawn Vehicle", function()
