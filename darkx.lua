@@ -1,13 +1,9 @@
--- Dark X
 return function(library)
-local ok, err = pcall(function()
-
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
-local Remote = nil
 
 local S = {autoFarm=false, autoChop=false, autoBuy=false, selectedTree=nil, selectedSawmill=nil, selectedWood=nil, woodColor=nil}
 
@@ -46,7 +42,9 @@ local function chop(tree)
     if not axe then msg("Dark X","u need an axe") return end
     local ev=tree:FindFirstChild("CutEvent")
     if not ev then return end
-    for s=1,4 do Remote:FireServer(ev,{tool=axe,hitPoints=10,faceVector=Vector3.new(1,0,0),height=0.3,sectionId=s,cooldown=0}) task.wait(0.05) end
+    local remote=RS:FindFirstChild("Interaction") and RS.Interaction:FindFirstChild("RemoteProxy")
+    if not remote then return end
+    for s=1,4 do remote:FireServer(ev,{tool=axe,hitPoints=10,faceVector=Vector3.new(1,0,0),height=0.3,sectionId=s,cooldown=0}) task.wait(0.05) end
     msg("Dark X","cut done")
 end
 
@@ -63,177 +61,188 @@ end
 local function tp(p) local h=hrp() if h then h.CFrame=CFrame.new(p) end end
 
 local function fireRemote(name)
-    local rs=game:GetService("ReplicatedStorage")
-    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true) or rs:FindFirstChildWhichIsA("RemoteFunction",true)
-    if r then
-        if r:IsA("RemoteFunction") then r:InvokeServer(name) else r:FireServer(name) end
+    local r=RS:FindFirstChildWhichIsA("RemoteEvent",true) or RS:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then if r:IsA("RemoteFunction") then r:InvokeServer(name) else r:FireServer(name) end end
+end
+
+local locs = {
+    ["Wood R Us"]=Vector3.new(270,4,60), ["Spawn"]=Vector3.new(174,10.5,66), ["Land Store"]=Vector3.new(270,3,-98),
+    ["Bridge"]=Vector3.new(112,37,-892), ["Dock"]=Vector3.new(1136,0,-206), ["Palm"]=Vector3.new(2614,-4,-34),
+    ["Cave"]=Vector3.new(3590,-177,415), ["Volcano"]=Vector3.new(-1588,623,1069), ["Swamp"]=Vector3.new(-1216,131,-822),
+    ["Fancy Furnishings"]=Vector3.new(486,3,-1722), ["Boxed Cars"]=Vector3.new(509,3,-1458), ["Ice Mountain"]=Vector3.new(1487,415,3259),
+    ["Links Logic"]=Vector3.new(4615,7,-794), ["Bobs Shack"]=Vector3.new(292,8,-2544), ["Fine Arts Store"]=Vector3.new(5217,-166,721),
+    ["Shrine Of Sight"]=Vector3.new(-1608,195,928), ["Strange Man"]=Vector3.new(1071,16,1141), ["Volcano Win"]=Vector3.new(-1667,349,1474),
+    ["Ski Lodge"]=Vector3.new(1244,59,2290), ["Fur Wood"]=Vector3.new(-1080,-5,-942),
+}
+
+local colors = {Pine=Color3.fromRGB(163,162,165), Fir=Color3.fromRGB(86,66,54), Birch=Color3.fromRGB(255,255,255),
+    ["Lime green"]=Color3.fromRGB(0,255,0), ["Dark red"]=Color3.fromRGB(140,0,0), ["Really red"]=Color3.fromRGB(255,0,0),
+    ["Deep blue"]=Color3.fromRGB(0,0,140), ["Dark grey"]=Color3.fromRGB(50,50,50)}
+
+-- Manual UI
+local gui = Instance.new("ScreenGui", player.PlayerGui)
+gui.Name = "DarkX"
+gui.ResetOnSpawn = false
+local f = Instance.new("Frame", gui)
+f.Size = UDim2.new(0, 280, 0, 400)
+f.Position = UDim2.new(0.5, -140, 0.3, 0)
+f.BackgroundColor3 = Color3.fromRGB(20, 20, 24)
+f.Active = true
+f.Draggable = true
+local corner = Instance.new("UICorner", f)
+corner.CornerRadius = UDim.new(0, 8)
+
+local title = Instance.new("TextLabel", f)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "Dark X"
+title.BackgroundColor3 = Color3.fromRGB(30, 30, 36)
+title.TextColor3 = Color3.new(1,1,1)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 14
+local titleC = Instance.new("UICorner", title)
+titleC.CornerRadius = UDim.new(0, 8)
+
+local tabs = Instance.new("Frame", f)
+tabs.Size = UDim2.new(1, 0, 0, 28)
+tabs.Position = UDim2.new(0, 0, 0, 30)
+tabs.BackgroundTransparency = 1
+local tabLayout = Instance.new("UIListLayout", tabs)
+tabLayout.FillDirection = Enum.FillDirection.Horizontal
+tabLayout.Padding = UDim.new(0, 2)
+
+local content = Instance.new("ScrollingFrame", f)
+content.Size = UDim2.new(1, -8, 1, -66)
+content.Position = UDim2.new(0, 4, 0, 62)
+content.BackgroundTransparency = 1
+content.ScrollBarThickness = 3
+content.CanvasSize = UDim2.new(0, 0, 0, 800)
+local contentLayout = Instance.new("UIListLayout", content)
+contentLayout.Padding = UDim.new(0, 3)
+
+local currentTab = "Wood"
+local tabButtons = {}
+local tabContents = {}
+
+local function clearContent()
+    for _, c in pairs(content:GetChildren()) do
+        if c:IsA("TextButton") or c:IsA("TextLabel") then c:Destroy() end
     end
 end
 
--- Locations from disassembly
-local locs = {
-    ["Wood R Us"] = Vector3.new(270, 4, 60),
-    ["Spawn"] = Vector3.new(174, 10.5, 66),
-    ["Land Store"] = Vector3.new(270, 3, -98),
-    ["Bridge"] = Vector3.new(112, 37, -892),
-    ["Dock"] = Vector3.new(1136, 0, -206),
-    ["Palm"] = Vector3.new(2614, -4, -34),
-    ["Cave"] = Vector3.new(3590, -177, 415),
-    ["Volcano"] = Vector3.new(-1588, 623, 1069),
-    ["Swamp"] = Vector3.new(-1216, 131, -822),
-    ["Fancy Furnishings"] = Vector3.new(486, 3, -1722),
-    ["Boxed Cars"] = Vector3.new(509, 3, -1458),
-    ["Ice Mountain"] = Vector3.new(1487, 415, 3259),
-    ["Links Logic"] = Vector3.new(4615, 7, -794),
-    ["Bobs Shack"] = Vector3.new(292, 8, -2544),
-    ["Fine Arts Store"] = Vector3.new(5217, -166, 721),
-    ["Shrine Of Sight"] = Vector3.new(-1608, 195, 928),
-    ["Strange Man"] = Vector3.new(1071, 16, 1141),
-    ["Volcano Win"] = Vector3.new(-1667, 349, 1474),
-    ["Ski Lodge"] = Vector3.new(1244, 59, 2290),
-    ["Fur Wood"] = Vector3.new(-1080, -5, -942),
-}
+local function addBtn(text, cb)
+    local b = Instance.new("TextButton", content)
+    b.Size = UDim2.new(1, -4, 0, 26)
+    b.Text = text
+    b.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+    b.TextColor3 = Color3.new(1,1,1)
+    b.Font = Enum.Font.Gotham
+    b.TextSize = 12
+    b.MouseButton1Click:Connect(cb)
+    local c = Instance.new("UICorner", b)
+    c.CornerRadius = UDim.new(0, 4)
+end
 
-local colors = {
-    Pine=Color3.fromRGB(163,162,165), Fir=Color3.fromRGB(86,66,54), Birch=Color3.fromRGB(255,255,255),
-    ["Lime green"]=Color3.fromRGB(0,255,0), ["Dark red"]=Color3.fromRGB(140,0,0), ["Really red"]=Color3.fromRGB(255,0,0),
-    ["Deep blue"]=Color3.fromRGB(0,0,140), ["Dark grey"]=Color3.fromRGB(50,50,50),
-}
+local function showTab(name)
+    currentTab = name
+    clearContent()
+    for n, btn in pairs(tabButtons) do
+        btn.BackgroundColor3 = n == name and Color3.fromRGB(140, 80, 255) or Color3.fromRGB(40, 40, 48)
+    end
+    if tabContents[name] then tabContents[name]() end
+end
 
--- UI
-local win = library:new("Dark X")
-local woodTab = win:Tab("Wood", "0")
-local woodSec = woodTab:section("Actions")
-print("woodSec type:", type(woodSec), "has Button:", woodSec.Button ~= nil)
-local woodColor = woodTab:section("Colors")
-local sawTab = win:Tab("Sawmill", "0")
-local sawSec = sawTab:section("Sawmill")
-local axeTab = win:Tab("Axe", "0")
-local axeSec = axeTab:section("Axe")
-local buildTab = win:Tab("Build", "0")
-local buildSec = buildTab:section("Base")
-local landSec = buildTab:section("Land")
-local worldTab = win:Tab("World", "0")
-local worldSec = worldTab:section("World")
-local playerSec = worldTab:section("Player")
-local tpTab = win:Tab("Teleport", "0")
-local tpSec = tpTab:section("Locations")
+local function makeTab(name, fn)
+    local b = Instance.new("TextButton", tabs)
+    b.Size = UDim2.new(0, 44, 1, 0)
+    b.Text = name
+    b.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+    b.TextColor3 = Color3.new(1,1,1)
+    b.Font = Enum.Font.Gotham
+    b.TextSize = 10
+    b.MouseButton1Click:Connect(function() showTab(name) end)
+    local c = Instance.new("UICorner", b)
+    c.CornerRadius = UDim.new(0, 4)
+    tabButtons[name] = b
+    tabContents[name] = fn
+end
 
--- Wood tab
-woodSec:Button("Bring Tree", function()
-    local ts=getTrees() local h=hrp()
-    if not h or #ts==0 then msg("Dark X","not find tree") return end
-    local best,d=nil,math.huge
-    for _,t in pairs(ts) do if t.PrimaryPart then local dd=(t.PrimaryPart.Position-h.Position).Magnitude if dd<d then best,d=t,dd end end end
-    if best then S.selectedTree=best bring(best) msg("Dark X","Wood Selected") end
-end)
-woodSec:Button("Bring All Tree", function() bringAll(getTrees()) end)
-woodSec:Button("Bring All Plank", function() bringAll(getOwned()) end)
-woodSec:Button("Sell All Tree", function() for _,t in pairs(getTrees()) do local r=t:FindFirstChildWhichIsA("RemoteEvent",true) if r then r:FireServer("Sell") end end msg("Dark X","Sell All Tree") end)
-woodSec:Toggle("Auto Chop", false, function(s)
-    S.autoChop=s
-    if s then task.spawn(function() while S.autoChop do local h=hrp() if h then for _,t in pairs(getTrees()) do if not S.autoChop then break end if t.PrimaryPart and (t.PrimaryPart.Position-h.Position).Magnitude<60 then chop(t) end end end task.wait(1) end end) end
-end)
-woodSec:Toggle("Auto Farm", false, function(s)
-    S.autoFarm=s
-    if s then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then bring(ts[1]) task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
-end)
-woodSec:Button("Click one Wood", function()
-    msg("Dark X","Click one Wood")
-    local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m:FindFirstChild("TreeClass") then S.selectedWood=m msg("Dark X","Wood Selected") c:Disconnect() end end end end)
-end)
-woodSec:Button("Mod Wood", function()
-    if not S.selectedWood then msg("Dark X","select Wood At First") return end
-    if not S.woodColor then msg("Dark X","u cant mod this wood") return end
-    for _,p in pairs(S.selectedWood:GetDescendants()) do if p:IsA("BasePart") and (p.Name=="BuildDependentWood" or p.Name=="Main") then p.Color=S.woodColor end end
-end)
-woodSec:Button("Cut Tree Joints", function() if not S.selectedTree then msg("Dark X","select Wood At First") return end chop(S.selectedTree) end)
-woodSec:Button("Find Spooky Wood", function()
-    for _,t in pairs(getTrees()) do if t:FindFirstChild("TreeClass") and t.TreeClass.Value:find("Spooky") then bring(t) msg("Dark X","Found") return end end
-    msg("Dark X","Not Found")
-end)
-for n,c in pairs(colors) do woodColor:Button(n, function() S.woodColor=c msg("Dark X",n) end) end
-
--- Sawmill tab
-sawSec:Button("Select Sawmill", function()
-    msg("Dark X","Click one Sawmill")
-    local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","Sawmill Selected") c:Disconnect() end end end end)
-end)
-sawSec:Button("Max Settings", function()
-    if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
-    for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end
-end)
-sawSec:Button("Lowest Settings", function()
-    if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
-    for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end end
-end)
-sawSec:Button("Plank Size 1", function()
-    for _,item in pairs(getOwned()) do if item:FindFirstChild("Main") and item.Main:IsA("BasePart") then item.Main.Size=Vector3.new(1,1,1) end end
+makeTab("Wood", function()
+    addBtn("Bring Tree", function()
+        local ts=getTrees() local h=hrp()
+        if not h or #ts==0 then msg("Dark X","not find tree") return end
+        local best,d=nil,math.huge
+        for _,t in pairs(ts) do if t.PrimaryPart then local dd=(t.PrimaryPart.Position-h.Position).Magnitude if dd<d then best,d=t,dd end end end
+        if best then S.selectedTree=best bring(best) msg("Dark X","Wood Selected") end
+    end)
+    addBtn("Bring All", function() bringAll(getTrees()) end)
+    addBtn("Bring Planks", function() bringAll(getOwned()) end)
+    addBtn("Auto Chop", function()
+        S.autoChop=not S.autoChop msg("Dark X", S.autoChop and "on" or "off")
+        if S.autoChop then task.spawn(function() while S.autoChop do local h=hrp() if h then for _,t in pairs(getTrees()) do if not S.autoChop then break end if t.PrimaryPart and (t.PrimaryPart.Position-h.Position).Magnitude<60 then chop(t) end end end task.wait(1) end end) end
+    end)
+    addBtn("Auto Farm", function()
+        S.autoFarm=not S.autoFarm msg("Dark X", S.autoFarm and "on" or "off")
+        if S.autoFarm then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then bring(ts[1]) task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
+    end)
+    addBtn("Select Wood", function()
+        msg("Dark X","Click wood")
+        local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m:FindFirstChild("TreeClass") then S.selectedWood=m msg("Dark X","Selected") c:Disconnect() end end end end)
+    end)
+    addBtn("Mod Wood", function()
+        if not S.selectedWood or not S.woodColor then msg("Dark X","select wood and color") return end
+        for _,p in pairs(S.selectedWood:GetDescendants()) do if p:IsA("BasePart") and (p.Name=="BuildDependentWood" or p.Name=="Main") then p.Color=S.woodColor end end
+    end)
+    for n,c in pairs(colors) do addBtn(n, function() S.woodColor=c msg("Dark X",n) end) end
 end)
 
--- Axe tab
-axeSec:Button("Auto Dupe Axe", function()
-    if not getAxe() then msg("Dark X","u need one axe") return end
-    fireRemote("Dupe") msg("Dark X","now u can save the slot")
+makeTab("Saw", function()
+    addBtn("Select Sawmill", function()
+        msg("Dark X","Click sawmill")
+        local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","Selected") c:Disconnect() end end end end)
+    end)
+    addBtn("Max Settings", function()
+        if not S.selectedSawmill then return end
+        for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end
+    end)
+    addBtn("Min Settings", function()
+        if not S.selectedSawmill then return end
+        for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end end
+    end)
 end)
-axeSec:Button("Dupe Power", function() fireRemote("Dupe Power") msg("Dark X","Dupe Power") end)
-axeSec:Button("Pick Up Axe", function()
-    for _,item in pairs(getOwned()) do
-        if item:FindFirstChild("ToolName") then
+
+makeTab("Axe", function()
+    addBtn("Dupe Axe", function() if not getAxe() then msg("Dark X","need axe") return end fireRemote("Dupe") msg("Dark X","save slot") end)
+    addBtn("Pick Up", function()
+        for _,item in pairs(getOwned()) do
             local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
             if r then r:FireServer("Pick up tool") end
         end
-    end
-end)
-axeSec:Button("Calm Rukiryaxe", function()
-    local axe=getAxe()
-    if axe and axe.Name:find("Rukiryaxe") then local r=axe:FindFirstChildWhichIsA("RemoteEvent",true) if r then r:FireServer("Calm") end end
+    end)
 end)
 
--- Build tab
-buildSec:Button("Save Base", function() fireRemote("Save") msg("Dark X","Save Base success") end)
-buildSec:Button("Load Base", function() fireRemote("Load") msg("Dark X","Load Base") end)
-buildSec:Button("Fast Load", function() fireRemote("FastLoad") msg("Dark X","Fast Load") end)
-landSec:Button("Free Land", function() fireRemote("Free Land") msg("Dark X","Free Land") end)
-landSec:Button("Max Land", function() fireRemote("Max Land") msg("Dark X","Max Land") end)
-landSec:Button("Land Art", function() fireRemote("Land Art") msg("Dark X","Land Art") end)
-buildSec:Button("Get Blueprint", function() fireRemote("Open box") msg("Dark X","Open box") end)
-buildSec:Button("Get All Blueprint", function() fireRemote("Get All blueprint") end)
-buildSec:Button("Fill All Blueprint", function() fireRemote("Fill All blueprint") end)
-buildSec:Toggle("Auto Buy", false, function(s) S.autoBuy=s if s then task.spawn(function() while S.autoBuy do fireRemote("Buy") task.wait(1) end end) end end)
-buildSec:Button("Take Down Sold Sign", function()
-    for _,item in pairs(getOwned()) do
-        if item:FindFirstChild("ItemName") then
-            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
-            if r then r:FireServer("Take down sold sign") end
-        end
-    end
-end)
-buildSec:Button("Slot Save", function() fireRemote("Slot") msg("Dark X","Slot saved successfully") end)
-
--- World tab
-worldSec:Button("Always Day", function() Lighting.ClockTime=14 end)
-worldSec:Button("Always Night", function() Lighting.ClockTime=0 end)
-worldSec:Button("Toggle Shadows", function() Lighting.GlobalShadows=not Lighting.GlobalShadows end)
-worldSec:Button("Remove Fog", function() Lighting.FogEnd=100000 end)
-worldSec:Button("Remove Water", function() for _,p in pairs(workspace:GetDescendants()) do if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end end end)
-worldSec:Button("Remove Boulders", function() for _,p in pairs(workspace:GetDescendants()) do if p.Name:find("Boulder") then p:Destroy() end end end)
-playerSec:Toggle("Fly", false, function(s) local h=hum() if h then h.PlatformStand=s end end)
-playerSec:Toggle("Inf Jump", false, function(s) if s then UIS.JumpRequest:Connect(function() local h=hum() if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end end) end end)
-playerSec:Button("Zoom", function() player.CameraMaxZoomDistance=500 end)
-playerSec:Button("Tp to Base", function()
-    for _,item in pairs(getOwned()) do if item.PrimaryPart then tp(item.PrimaryPart.Position) return end end
-    msg("Dark X","Player Not Have Base")
+makeTab("Build", function()
+    addBtn("Save Base", function() fireRemote("Save") msg("Dark X","saved") end)
+    addBtn("Load Base", function() fireRemote("Load") end)
+    addBtn("Free Land", function() fireRemote("Free Land") end)
+    addBtn("Max Land", function() fireRemote("Max Land") end)
+    addBtn("Get Blueprint", function() fireRemote("Open box") end)
 end)
 
--- Teleport tab
-for name, pos in pairs(locs) do
-    tpSec:Button(name, function() tp(pos) end)
-end
-
-task.spawn(function()
-    Remote = RS:WaitForChild("Interaction", 10)
-    if Remote then Remote = Remote:WaitForChild("RemoteProxy", 10) end
+makeTab("World", function()
+    addBtn("Day", function() Lighting.ClockTime=14 end)
+    addBtn("Night", function() Lighting.ClockTime=0 end)
+    addBtn("No Fog", function() Lighting.FogEnd=100000 end)
+    addBtn("Fly", function() local h=hum() if h then h.PlatformStand=not h.PlatformStand end end)
+    addBtn("Tp Base", function()
+        for _,item in pairs(getOwned()) do if item.PrimaryPart then tp(item.PrimaryPart.Position) return end end
+        msg("Dark X","no base")
+    end)
 end)
+
+makeTab("TP", function()
+    for name, pos in pairs(locs) do addBtn(name, function() tp(pos) end) end
+end)
+
+showTab("Wood")
 print("Dark X loaded")
 end
