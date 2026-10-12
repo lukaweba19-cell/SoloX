@@ -1291,6 +1291,10 @@ extra:Button("Select Blueprint", function()
         end
     end)
 end)
+extra:Button("Load Preview", function()
+    if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
+    msg("Dark x","load ur file at first")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
