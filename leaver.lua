@@ -48,7 +48,7 @@ local function leaveNow()
     local req = request or (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
     if not req then return end
     local url = string.format("https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=Asc&limit=100", game.PlaceId)
-    local res = req(url)
+    local res = req({Url = url, Method = "GET"})
     local data = game:GetService("HttpService"):JSONDecode(res.Body)
     local serverId
     if data and data.data then
