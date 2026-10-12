@@ -1501,6 +1501,10 @@ extra:Button("Remove Boulders", function()
     end
     msg("Dark X","Remove Volcano Boulders")
 end)
+extra:Button("Shadows", function()
+    Lighting.GlobalShadows=not Lighting.GlobalShadows
+    msg("Dark X","Shadows")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
