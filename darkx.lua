@@ -1188,6 +1188,12 @@ extra:Button("Loop Auto Buy", function()
     if re then task.spawn(function() while true do re:FireServer("Buy") task.wait(0.5) end end) end
     msg("Dark X","Loop Auto Buy")
 end)
+extra:Button("Auto Buy All BluePrints", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Auto Buy All BluePrints") end
+    msg("Dark X","Auto Buy All BluePrints")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
