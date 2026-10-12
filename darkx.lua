@@ -1542,6 +1542,11 @@ extra:Button("Tp Base", function()
     end
     msg("Dark X","Player Not Have Base")
 end)
+extra:Button("Fly", function()
+    local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if h then h.PlatformStand=not h.PlatformStand end
+    msg("Dark X","Fly")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
