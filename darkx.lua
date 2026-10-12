@@ -198,6 +198,12 @@ saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.select
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
+axe:Button("Dupe Power", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer() end
+    msg("Dark X","Dupe Power To Build With ease")
+end)
 axe:Button("Calm Rukiryaxe", function()
     local axe=getAxe()
     if not axe then msg("Dark X","need axe") return end
@@ -237,6 +243,24 @@ build:Button("Save", function()
     msg("Dark X","Save Base success")
 end)
 build:Button("Load", function() msg("Dark X","load") end)
+build:Button("Loop Auto Buy", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then task.spawn(function() while true do r:FireServer("Buy") task.wait(0.3) end end) end
+    msg("Dark X","Loop Auto Buy")
+end)
+build:Button("Auto Filler", function()
+    msg("Dark X","Auto Filler")
+end)
+build:Button("Select Store", function()
+    msg("Dark X","Select Store")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then S.selectedStore=t:FindFirstAncestorOfClass("Model") msg("Dark X","selected") c:Disconnect() end
+        end
+    end)
+end)
 build:Button("Auto Buy", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
