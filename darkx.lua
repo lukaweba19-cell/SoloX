@@ -178,6 +178,9 @@ saw:Button("Select", function()
     local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","selected") c:Disconnect() end end end end)
 end)
 saw:Button("Max", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end end end)
+saw:Button("Hard Dragger", function()
+    msg("Dark X","Hard Dragger")
+end)
 saw:Button("Mod Sawmill", function()
     if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
     if S.woodColor then
