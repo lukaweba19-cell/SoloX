@@ -1302,6 +1302,10 @@ end)
 extra:Button("Set Position", function()
     msg("Dark x","u need set Position")
 end)
+extra:Button("Endtimes Check", function()
+    local axe=getAxe()
+    if axe and axe.Name:find("Endtimes") then msg("Dark X","have EndtimesAxe") else msg("Dark X","you need a EndtimesAxe") end
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
