@@ -234,6 +234,16 @@ end)
 local land = buildTab:section("Land")
 land:Button("Free Land", function() msg("Dark X","free land") end)
 land:Button("Max Land", function() msg("Dark X","max land") end)
+land:Button("Stand Plank", function()
+    for _,item in pairs(getOwned()) do
+        if item.PrimaryPart then item.PrimaryPart.Anchored=true end
+    end
+    msg("Dark X","Stand Plank")
+end)
+land:Button("Delete", function()
+    for _,item in pairs(getOwned()) do item:Destroy() end
+    msg("Dark X","click to Delete")
+end)
 land:Button("Take Down Sold Sign", function()
     for _,item in pairs(workspace:GetChildren()) do
         local owner=item:FindFirstChild("Owner")
