@@ -1690,6 +1690,13 @@ extra:Button("Dupe", function()
     if not getAxe() then msg("Dark X","need axe") return end
     msg("Dark X","Dupe")
 end)
+extra:Button("Pick Up", function()
+    for _,item in pairs(getOwned()) do
+        local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Pick up tool") end
+    end
+    msg("Dark X","Pick Up")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
