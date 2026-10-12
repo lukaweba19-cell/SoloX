@@ -1256,6 +1256,10 @@ extra:Button("Stand Plank", function()
     end
     msg("Dark X","Stand Plank")
 end)
+extra:Button("Click to Delete", function()
+    for _,item in pairs(getOwned()) do item:Destroy() end
+    msg("Dark X","click to Delete")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
