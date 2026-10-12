@@ -160,7 +160,7 @@ main.Parent = gui
 main.BackgroundColor3 = Color3.fromRGB(16, 16, 20)
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.5, -140, 0.5, -90)
-main.Size = UDim2.new(0, 280, 0, 180)
+main.Size = UDim2.new(0, 280, 0, 220)
 main.ClipsDescendants = true
 main.Active = true
 
@@ -274,7 +274,7 @@ makeBtn("Turn Save Off", turnSaveOff)
 
 local function toggle()
     minimized = not minimized
-    local target = minimized and UDim2.new(0, 0, 0, 0) or UDim2.new(0, 280, 0, 180)
+    local target = minimized and UDim2.new(0, 0, 0, 0) or UDim2.new(0, 280, 0, 220)
     TweenService:Create(main, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = target}):Play()
     openBtn.Text = minimized and "OPEN" or "CLOSE"
 end
