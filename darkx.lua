@@ -1215,6 +1215,15 @@ extra:Button("Auto Farm Sold Sign", function()
     end
     msg("Dark X","Auto Farm Sold Sign")
 end)
+extra:Button("Sell Sold Sign", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","Sell Sold Sign")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
