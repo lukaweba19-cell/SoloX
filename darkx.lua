@@ -1516,6 +1516,11 @@ extra:Button("Zoom", function()
     player.CameraMaxZoomDistance=500
     msg("Dark X","Zoom Distance")
 end)
+extra:Button("Walk Water", function()
+    local p=Instance.new("Part",workspace)
+    p.Name="WaterWalk" p.Size=Vector3.new(500,1,500) p.Anchored=true p.CanCollide=true p.Transparency=1 p.Position=Vector3.new(0,0,0)
+    msg("Dark X","Walk On Water")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
