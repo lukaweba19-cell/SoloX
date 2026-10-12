@@ -283,6 +283,15 @@ axe:Button("Calm Rukiryaxe", function()
     if r then r:FireServer("Calm") end
     msg("Dark X","Calming Rukiryaxe")
 end)
+axe:Button("Calm Rukiryaxe", function()
+    local axe=getAxe()
+    if not axe then msg("Dark X","need axe") return end
+    if axe.Name:find("Rukiryaxe") then
+        local r=axe:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Calm") end
+    end
+    msg("Dark X","Auto Calm Rukiryaxe")
+end)
 axe:Button("Dupe", function()
     if not getAxe() then msg("Dark X","need axe") return end
     local rs=game:GetService("ReplicatedStorage")
@@ -312,6 +321,12 @@ build:Button("Save", function()
     local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
     if r then r:InvokeServer(game:GetService("Players"):GetPlayers(), 0) end
     msg("Dark X","Save Base success")
+end)
+build:Button("Slot Save", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Slot saved successfully")
 end)
 build:Button("Get Blueprint", function()
     local rs=game:GetService("ReplicatedStorage")
