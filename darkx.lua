@@ -915,6 +915,17 @@ extra:Button("Select Blueprint", function()
         end
     end)
 end)
+extra:Button("Load Preview", function()
+    if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
+    msg("Dark x","load ur file at first")
+end)
+extra:Button("Execute Build", function()
+    if not S.selectedBlueprint then msg("Dark x","execute ur build preview at first") return end
+    msg("Dark x","Click Build if u already build done")
+end)
+extra:Button("Set Position", function()
+    msg("Dark x","u need set Position")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
