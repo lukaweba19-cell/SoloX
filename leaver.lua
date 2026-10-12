@@ -82,9 +82,12 @@ local function turnSaveOff()
     if donate then donate = donate:FindFirstChild("Donate") end
     if donate then
         local players = game:GetService("Players"):GetPlayers()
-        donate:InvokeServer(players[2], 0, slottoload)
+        local target = #players >= 2 and players[2] or players[1]
+        donate:InvokeServer(target, 0, slottoload)
+        msg("sent 0 to " .. target.Name)
+    else
+        msg("no donate remote")
     end
-    msg("save turned off")
     local startMin = os.date("*t").min
     local targetMin = startMin + 8
     if targetMin >= 60 then targetMin = targetMin - 60 end
