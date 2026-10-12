@@ -1536,6 +1536,12 @@ extra:Button("Safe Death", function()
     if h then h.Health=h.MaxHealth end
     msg("Dark X","Safe Death")
 end)
+extra:Button("Tp Base", function()
+    for _,item in pairs(getOwned()) do
+        if item.PrimaryPart then tp(item.PrimaryPart.Position) msg("Dark X","Tp to Base") return end
+    end
+    msg("Dark X","Player Not Have Base")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
