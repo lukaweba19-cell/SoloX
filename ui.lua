@@ -13,7 +13,7 @@ local OpenBtn = nil
 
 local function updateOpenButton()
     if OpenBtn then
-        OpenBtn.Text = minimized and "Open" or "Close"
+        OpenBtn.Text = minimized and "OPEN" or "CLOSE"
     end
 end
 
@@ -101,24 +101,28 @@ function library:new(Name)
     TopC.CornerRadius = UDim.new(0, 8)
     TopC.Parent = Top
 
-    -- Logo (simple clean circle with S)
+    -- Custom Logo
     local Logo = Instance.new("Frame")
     Logo.Parent = Top
-    Logo.BackgroundColor3 = Color3.fromRGB(140, 80, 255)
+    Logo.BackgroundColor3 = Color3.fromRGB(28, 28, 36)
     Logo.Position = UDim2.new(0, 8, 0.5, -12)
     Logo.Size = UDim2.new(0, 24, 0, 24)
     local LogoC = Instance.new("UICorner")
-    LogoC.CornerRadius = UDim.new(1, 0)
+    LogoC.CornerRadius = UDim.new(0, 6)
     LogoC.Parent = Logo
+    local LogoStroke = Instance.new("UIStroke")
+    LogoStroke.Color = Color3.fromRGB(140, 80, 255)
+    LogoStroke.Thickness = 1.5
+    LogoStroke.Parent = Logo
 
     local LogoText = Instance.new("TextLabel")
     LogoText.Parent = Logo
     LogoText.BackgroundTransparency = 1
     LogoText.Size = UDim2.new(1, 0, 1, 0)
     LogoText.Font = Enum.Font.GothamBold
-    LogoText.Text = "S"
-    LogoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    LogoText.TextSize = 14
+    LogoText.Text = "SX"
+    LogoText.TextColor3 = Color3.fromRGB(140, 80, 255)
+    LogoText.TextSize = 11
 
     local Title = Instance.new("TextLabel")
     Title.Parent = Top
@@ -126,7 +130,7 @@ function library:new(Name)
     Title.Position = UDim2.new(0, 40, 0, 0)
     Title.Size = UDim2.new(0, 180, 1, 0)
     Title.Font = Enum.Font.GothamBold
-    Title.Text = "SoloX"
+    Title.Text = "SoloX v2"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 15
     Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -137,7 +141,7 @@ function library:new(Name)
     Sub.Position = UDim2.new(0, 95, 0, 0)
     Sub.Size = UDim2.new(0, 130, 1, 0)
     Sub.Font = Enum.Font.Gotham
-    Sub.Text = "by Solodolosouls"
+    Sub.Text = "by Solodolosouls • NEW"
     Sub.TextColor3 = Color3.fromRGB(160, 160, 175)
     Sub.TextSize = 11
     Sub.TextXAlignment = Enum.TextXAlignment.Left
@@ -179,7 +183,7 @@ function library:new(Name)
     OpenBtn.Position = UDim2.new(0, 12, 0.5, -16)
     OpenBtn.Size = UDim2.new(0, 70, 0, 32)
     OpenBtn.Font = Enum.Font.GothamMedium
-    OpenBtn.Text = "Close"
+    OpenBtn.Text = "CLOSE"
     OpenBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     OpenBtn.TextSize = 13
     OpenBtn.Active = true
@@ -195,30 +199,32 @@ function library:new(Name)
         UIMinimize(Main)
     end)
 
-    -- Left Tabs
+    -- Top Tabs
     local TabBG = Instance.new("Frame")
     TabBG.Parent = Main
-    TabBG.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+    TabBG.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
     TabBG.BorderSizePixel = 0
     TabBG.Position = UDim2.new(0, 0, 0, 38)
-    TabBG.Size = UDim2.new(0, 120, 1, -38)
+    TabBG.Size = UDim2.new(1, 0, 0, 36)
 
     local TabHolder = Instance.new("ScrollingFrame")
     TabHolder.Parent = TabBG
     TabHolder.BackgroundTransparency = 1
     TabHolder.BorderSizePixel = 0
-    TabHolder.Position = UDim2.new(0, 4, 0, 6)
-    TabHolder.Size = UDim2.new(1, -8, 1, -12)
+    TabHolder.Position = UDim2.new(0, 6, 0, 4)
+    TabHolder.Size = UDim2.new(1, -12, 1, -8)
     TabHolder.ScrollBarThickness = 0
     TabHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
+    TabHolder.ScrollingDirection = Enum.ScrollingDirection.X
 
     local TabHolderLL = Instance.new("UIListLayout")
     TabHolderLL.Parent = TabHolder
-    TabHolderLL.Padding = UDim.new(0, 3)
+    TabHolderLL.Padding = UDim.new(0, 4)
     TabHolderLL.SortOrder = Enum.SortOrder.LayoutOrder
+    TabHolderLL.FillDirection = Enum.FillDirection.Horizontal
 
     TabHolderLL:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        TabHolder.CanvasSize = UDim2.new(0, 0, 0, TabHolderLL.AbsoluteContentSize.Y + 6)
+        TabHolder.CanvasSize = UDim2.new(0, TabHolderLL.AbsoluteContentSize.X + 8, 0, 0)
     end)
 
     drag(Main, Top)
@@ -234,8 +240,8 @@ function library:new(Name)
         Holder.Parent = Main
         Holder.BackgroundTransparency = 1
         Holder.BorderSizePixel = 0
-        Holder.Position = UDim2.new(0, 128, 0, 46)
-        Holder.Size = UDim2.new(0, 340, 0, 236)
+        Holder.Position = UDim2.new(0, 8, 0, 82)
+        Holder.Size = UDim2.new(1, -16, 1, -90)
         Holder.ScrollBarThickness = 2
         Holder.ScrollBarImageColor3 = Color3.fromRGB(140, 80, 255)
         Holder.Visible = false
@@ -253,8 +259,8 @@ function library:new(Name)
 
         local Tab = Instance.new("TextButton")
         Tab.Parent = TabHolder
-        Tab.BackgroundColor3 = Color3.fromRGB(24, 24, 30)
-        Tab.Size = UDim2.new(1, 0, 0, 32)
+        Tab.BackgroundColor3 = Color3.fromRGB(28, 28, 36)
+        Tab.Size = UDim2.new(0, 90, 1, 0)
         Tab.Font = Enum.Font.GothamMedium
         Tab.Text = ""
         Tab.AutoButtonColor = false
@@ -266,20 +272,20 @@ function library:new(Name)
         local Icon = Instance.new("ImageLabel")
         Icon.Parent = Tab
         Icon.BackgroundTransparency = 1
-        Icon.Position = UDim2.new(0, 6, 0.5, -8)
-        Icon.Size = UDim2.new(0, 16, 0, 16)
+        Icon.Position = UDim2.new(0, 6, 0.5, -7)
+        Icon.Size = UDim2.new(0, 14, 0, 14)
         Icon.Image = "rbxassetid://" .. tostring(IconID)
         Icon.ScaleType = Enum.ScaleType.Fit
 
         local TabText = Instance.new("TextLabel")
         TabText.Parent = Tab
         TabText.BackgroundTransparency = 1
-        TabText.Position = UDim2.new(0, 28, 0, 0)
-        TabText.Size = UDim2.new(1, -32, 1, 0)
+        TabText.Position = UDim2.new(0, 24, 0, 0)
+        TabText.Size = UDim2.new(1, -28, 1, 0)
         TabText.Font = Enum.Font.GothamMedium
         TabText.Text = Name
         TabText.TextColor3 = Color3.fromRGB(190, 190, 200)
-        TabText.TextSize = 12
+        TabText.TextSize = 11
         TabText.TextXAlignment = Enum.TextXAlignment.Left
         TabText.TextTruncate = Enum.TextTruncate.AtEnd
 
@@ -287,7 +293,7 @@ function library:new(Name)
             ChangeTab(Holder)
             for _, v in ipairs(TabHolder:GetChildren()) do
                 if v:IsA("TextButton") then
-                    v.BackgroundColor3 = Color3.fromRGB(24, 24, 30)
+                    v.BackgroundColor3 = Color3.fromRGB(28, 28, 36)
                     local lbl = v:FindFirstChild("TextLabel")
                     if lbl then lbl.TextColor3 = Color3.fromRGB(190, 190, 200) end
                 end
