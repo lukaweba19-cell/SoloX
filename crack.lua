@@ -24,9 +24,5 @@ end)
 
 -- Load UI and script
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/ui.lua"))()
-local script = loadstring(game:HttpGet("https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/darkx.lua"))()
-
--- Hook UI to script
-if script and script.SetUI then
-    script.SetUI(ui)
-end
+local scriptFn = loadstring(game:HttpGet("https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/darkx.lua"))()
+if scriptFn then scriptFn(ui) end

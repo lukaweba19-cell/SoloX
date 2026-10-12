@@ -1,5 +1,5 @@
--- Dark X using SoloX UI
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/ui.lua"))()
+-- Dark X
+return function(library)
 
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
@@ -221,3 +221,4 @@ for name, pos in pairs(locs) do
 end
 
 print("Dark X SoloX loaded")
+end
