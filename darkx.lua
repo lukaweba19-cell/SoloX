@@ -1531,6 +1531,11 @@ extra:Button("Tp Player", function()
     end
     msg("Dark X","Tp to Player")
 end)
+extra:Button("Safe Death", function()
+    local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if h then h.Health=h.MaxHealth end
+    msg("Dark X","Safe Death")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
