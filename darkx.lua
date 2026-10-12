@@ -517,6 +517,17 @@ world:Button("Remove Water", function()
         if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
     end
 end)
+world:Button("Remove Boulders", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p.Name:find("Boulder") or p.Name:find("Rock") then p:Destroy() end
+    end
+end)
+world:Button("Shadows", function() Lighting.GlobalShadows=not Lighting.GlobalShadows end)
+world:Button("Remove Water", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
+    end
+end)
 world:Button("Abort", function()
     S.autoFarm=false S.autoChop=false
     msg("Dark X","Abort")
@@ -553,6 +564,17 @@ playerSec:Button("Safe Death", function()
     if h then h.Health=h.MaxHealth end
 end)
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
+playerSec:Button("Inf Jump", function()
+    UIS.JumpRequest:Connect(function()
+        local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
+    end)
+end)
+playerSec:Button("Zoom", function() player.CameraMaxZoomDistance=500 end)
+playerSec:Button("Walk Water", function()
+    local p=Instance.new("Part",workspace)
+    p.Name="WaterWalk" p.Size=Vector3.new(500,1,500) p.Anchored=true p.CanCollide=true p.Transparency=1 p.Position=Vector3.new(0,0,0)
+end)
 playerSec:Button("Flip Vehicle", function()
     for _,v in pairs(workspace:GetChildren()) do
         if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
