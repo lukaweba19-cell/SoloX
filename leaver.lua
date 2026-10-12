@@ -45,23 +45,24 @@ local function msg(text)
 end
 
 local function leaveNow()
-    local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
-    if ping then pcall(function() ping:InvokeServer() end) end
-    player:Destroy()
-    msg("leaving...")
-    task.spawn(function()
-        local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100"
-        local body = game:HttpGet(url)
-        local data = game:GetService("HttpService"):JSONDecode(body)
-        if data and data.data then
-            for _, s in pairs(data.data) do
-                if s.playing and s.maxPlayers and s.playing < (s.maxPlayers - 2) and s.id ~= game.JobId then
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, s.id, player)
-                    break
-                end
+    local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100"
+    local body = game:HttpGet(url)
+    local data = game:GetService("HttpService"):JSONDecode(body)
+    local serverId
+    if data and data.data then
+        for _, s in pairs(data.data) do
+            if s.id ~= game.JobId then
+                serverId = s.id
+                break
             end
         end
-    end)
+    end
+    if serverId then
+        local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
+        if ping then pcall(function() ping:InvokeServer() end) end
+        player:Destroy()
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverId, player)
+    end
 end
 
 local function turnSaveOff()
