@@ -676,6 +676,21 @@ playerSec:Button("Leave", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId, player)
     msg("Dark X","Leave without save")
 end)
+playerSec:Button("Tp Player", function()
+    local players=game:GetService("Players"):GetPlayers()
+    if #players>1 then
+        local t=players[2]
+        if t.Character and t.Character:FindFirstChild("HumanoidRootPart") then
+            tp(t.Character.HumanoidRootPart.Position)
+        end
+    end
+    msg("Dark X","Tp to Player")
+end)
+playerSec:Button("Safe Death", function()
+    local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if h then h.Health=h.MaxHealth end
+    msg("Dark X","Safe Death")
+end)
 playerSec:Button("Tp Base", function()
     for _,item in pairs(getOwned()) do if item.PrimaryPart then tp(item.PrimaryPart.Position) return end end
     msg("Dark X","no base")
