@@ -1563,6 +1563,13 @@ extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
 end)
+extra:Button("Close", function()
+    local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
+    if gui then gui:Destroy() end
+end)
+    S.autoFarm=false S.autoChop=false S.autoBuy=false
+    msg("Dark X","Abort")
+end)
 
 print("Dark X loaded")
 end
