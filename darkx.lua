@@ -1505,6 +1505,13 @@ extra:Button("Shadows", function()
     Lighting.GlobalShadows=not Lighting.GlobalShadows
     msg("Dark X","Shadows")
 end)
+extra:Button("Inf Jump", function()
+    UIS.JumpRequest:Connect(function()
+        local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
+    end)
+    msg("Dark X","Inf Jump")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
