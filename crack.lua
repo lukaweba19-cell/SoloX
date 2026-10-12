@@ -21,9 +21,9 @@ local oldHttp; oldHttp = hookfunction(game.HttpGet, function(self, url)
   	end
 	if url:match("newintestbeta") then
 		-- 🏳️‍🌈 REDIRECT TO UI BACKUP 🏳️‍🌈 --
-		url = "https://raw.githubusercontent.com/x0x37x/darkx-crack/refs/heads/main/ui.lua"
+		url = "https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/ui.lua"
 	end
   	return oldHttp(self, url)
 end)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/x0x37x/darkx-crack/refs/heads/main/obfuscated.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/lukaweba19-cell/SoloX/refs/heads/main/obfuscated.lua"))()
