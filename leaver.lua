@@ -45,20 +45,22 @@ local function msg(text)
 end
 
 local function leaveNow()
+    local hopped = false
     pcall(function()
         local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100"
         local body = game:HttpGet(url)
         local data = game:GetService("HttpService"):JSONDecode(body)
         if data and data.data then
             for _, s in pairs(data.data) do
-                if s.playing and s.maxPlayers and s.playing < (s.maxPlayers - 2) and s.id ~= game.JobId then
+                if s.playing and s.maxPlayers and tonumber(s.maxPlayers) > tonumber(s.playing) and s.id ~= game.JobId then
                     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, s.id, player)
+                    hopped = true
                     break
                 end
             end
         end
     end)
-    task.wait(1)
+    if hopped then task.wait(4) end
     player:Destroy()
     msg("leaving...")
 end
