@@ -231,6 +231,24 @@ build:Button("Load Preview", function()
     if not isfile or not isfile("build.txt") then msg("Dark x","not find file") return end
     msg("Dark x","load ur file at first")
 end)
+build:Button("Get All Blueprint", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Get All blueprint") end
+    msg("Dark X","Get All blueprint")
+end)
+build:Button("Fill All", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Fill All blueprint") end
+    msg("Dark X","Fill All blueprint")
+end)
+build:Button("Dupe Slot", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer() end
+    msg("Dark X","Dupe Slot")
+end)
 build:Button("Select Blueprint", function()
     msg("Dark x","select blueprint at first")
     local c c=UIS.InputBegan:Connect(function(i)
@@ -301,6 +319,11 @@ world:Button("Remove Water", function()
     for _,p in pairs(workspace:GetDescendants()) do
         if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
     end
+end)
+world:Button("Anti BlackList", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Anti BlackList") end
 end)
 world:Button("Shadows", function() Lighting.GlobalShadows=not Lighting.GlobalShadows end)
 world:Button("Remove Boulders", function()
