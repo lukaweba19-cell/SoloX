@@ -1114,6 +1114,10 @@ extra:Button("Land Art", function()
     if re then re:FireServer("Land Art") end
     msg("Dark X","Land Art")
 end)
+extra:Button("Leave", function()
+    game:GetService("TeleportService"):Teleport(game.PlaceId, player)
+    msg("Dark X","Leave without save")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
