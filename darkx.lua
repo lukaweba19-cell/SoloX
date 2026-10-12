@@ -1623,6 +1623,13 @@ extra:Button("Select Sawmill", function()
         end
     end)
 end)
+extra:Button("Dupe Axe", function()
+    if not getAxe() then msg("Dark X","need axe") return end
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","now u can save the slot")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
