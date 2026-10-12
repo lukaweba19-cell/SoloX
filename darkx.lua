@@ -289,6 +289,7 @@ world:Button("Remove Water", function()
         if p:IsA("BasePart") and p.Name=="Water" then p:Destroy() end
     end
 end)
+world:Button("Shadows", function() Lighting.GlobalShadows=not Lighting.GlobalShadows end)
 world:Button("Remove Boulders", function()
     for _,p in pairs(workspace:GetDescendants()) do
         if p.Name:find("Boulder") or p.Name:find("Rock") then p:Destroy() end
@@ -302,6 +303,18 @@ world:Button("Walk Water", function()
     end
 end)
 local playerSec = worldTab:section("Player")
+playerSec:Button("Inf Jump", function()
+    UIS.JumpRequest:Connect(function()
+        local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
+    end)
+    msg("Dark X","Inf Jump")
+end)
+playerSec:Button("Zoom", function() player.CameraMaxZoomDistance=500 end)
+playerSec:Button("Safe Death", function()
+    local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if h then h.Health=h.MaxHealth end
+end)
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
 playerSec:Button("Spawn Vehicle", function()
     msg("Dark X","Click a spawn pad")
