@@ -75,6 +75,15 @@ woodActions:Button("Bring Tree", function()
     for _,t in pairs(ts) do if t.PrimaryPart then local dd=(t.PrimaryPart.Position-h.Position).Magnitude if dd<d then best,d=t,dd end end end
     if best then S.selectedTree=best bring(best) msg("Dark X","brought") end
 end)
+woodActions:Button("Sell Plank", function()
+    for _,item in pairs(getOwned()) do
+        if item.Name:find("Plank") or (item:FindFirstChild("ItemName") and tostring(item.ItemName.Value):find("Plank")) then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","click to sell plank")
+end)
 woodActions:Button("Bring All", function()
     local h=hrp() if not h then return end
     for i,t in ipairs(getTrees()) do if t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%4)*6,0,-10)) end end
