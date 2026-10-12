@@ -1136,6 +1136,13 @@ extra:Button("Anti BlackList", function()
     if re then re:FireServer("Anti BlackList") end
     msg("Dark X","Anti BlackList")
 end)
+extra:Button("Check Money", function()
+    local ls=player:FindFirstChild("leaderstats")
+    if ls then
+        local m=ls:FindFirstChild("Money") or ls:FindFirstChild("Cash")
+        if m then msg("Dark X",tostring(m.Value)) end
+    end
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
