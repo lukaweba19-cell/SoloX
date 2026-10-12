@@ -1388,6 +1388,15 @@ extra:Button("Find Spooky Wood", function()
     end
     msg("Dark X","Not Found Phantom Tree")
 end)
+extra:Button("View Phantom Tree", function()
+    for _,t in pairs(getTrees()) do
+        if t:FindFirstChild("TreeClass") and tostring(t.TreeClass.Value):find("Phantom") then
+            local h=hrp()
+            if h and t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) msg("Dark X","View phantom tree") return end
+        end
+    end
+    msg("Dark X","Not Found Phantom Tree")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
