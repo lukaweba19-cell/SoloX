@@ -81,28 +81,15 @@ end
 local function turnSaveOff()
     local slot = player:FindFirstChild("CurrentSaveSlot", true)
     local saving = player:FindFirstChild("CurrentlySavingOrLoading", true)
-    if not slot then
-        local names = {}
-        for _, c in pairs(player:GetChildren()) do table.insert(names, c.Name) end
-        msg("no slot: " .. table.concat(names, ","):sub(1, 40))
-        return
-    end
     if saving then
         while saving.Value do task.wait() end
     end
-    local trans = RS:FindFirstChild("Transactions")
-    if not trans then msg("no transactions") return end
-    local cts = trans:FindFirstChild("ClientToServer")
-    if not cts then msg("no clienttoserver") return end
-    local donate = cts:FindFirstChild("Donate")
-    if not donate then msg("no donate") return end
-    local players = Players:GetPlayers()
-    local target = #players >= 2 and players[2] or players[1]
-    local slotVal = slot.Value
-    local ok, err = pcall(function()
-        donate:InvokeServer(target, 0, slotVal)
-    end)
-    if not ok then msg("donate failed") return end
+    local donate = RS:FindFirstChild("Transactions") and RS.Transactions:FindFirstChild("ClientToServer") and RS.Transactions.ClientToServer:FindFirstChild("Donate")
+    if donate and slot then
+        local players = Players:GetPlayers()
+        local target = #players >= 2 and players[2] or players[1]
+        pcall(function() donate:InvokeServer(target, 0, slot.Value) end)
+    end
     msg("save turned off")
     local startMin = os.date("*t").min
     local targetMin = startMin + 8
