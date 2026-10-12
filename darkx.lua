@@ -88,6 +88,7 @@ woodActions:Toggle("Auto Farm", false, function(s)
     if s then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then bring(ts[1]) task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
 end)
 woodActions:Button("Mod Wood", function()
+    if not getAxe() then msg("Dark X","u need an axe") return end
     if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
     msg("Dark X","click tree")
     local c c=UIS.InputBegan:Connect(function(i)
@@ -96,12 +97,16 @@ woodActions:Button("Mod Wood", function()
             if t then
                 local m=t:FindFirstAncestorOfClass("Model")
                 if m and m:FindFirstChild("TreeClass") then
+                    local tc=m.TreeClass.Value
+                    if tc:find("Spooky") or tc:find("Phantom") then msg("Dark X","u cant mod this wood") c:Disconnect() return end
                     S.selectedWood=m
-                    c:Disconnect()
-                    if S.selectedSawmill.PrimaryPart and m.PrimaryPart then
-                        m:SetPrimaryPartCFrame(S.selectedSawmill.PrimaryPart.CFrame * CFrame.new(0, 2, -5))
-                        msg("Dark X","tree at sawmill")
+                    local adorn=m.PrimaryPart or m:FindFirstChildWhichIsA("BasePart")
+                    if adorn then
+                        local box=Instance.new("BoxHandleAdornment",adorn)
+                        box.Adornee=adorn box.Size=adorn.Size*1.1 box.Color3=Color3.fromRGB(0,255,0) box.Transparency=0.5
                     end
+                    msg("Dark X","modded")
+                    c:Disconnect()
                 end
             end
         end
