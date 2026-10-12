@@ -1233,6 +1233,17 @@ extra:Button("Vehicle Speed", function()
     end
     msg("Dark X","Vehicle Speed")
 end)
+extra:Button("Box Sort", function()
+    local items=getOwned()
+    table.sort(items, function(a,b) return a.Name<b.Name end)
+    local h=hrp()
+    if h then
+        for i,item in ipairs(items) do
+            if item.PrimaryPart then item:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4)) end
+        end
+    end
+    msg("Dark X","Box Sort")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
