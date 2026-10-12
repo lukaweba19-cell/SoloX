@@ -1244,6 +1244,12 @@ extra:Button("Box Sort", function()
     end
     msg("Dark X","Box Sort")
 end)
+extra:Button("Set Plank Name", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then item.ItemName.Value="Plank" end
+    end
+    msg("Dark X","Set Plank Name")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
