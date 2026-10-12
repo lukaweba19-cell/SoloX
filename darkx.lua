@@ -1448,6 +1448,12 @@ extra:Button("Free Land", function()
     if re then re:FireServer("Free Land") end
     msg("Dark X","Free Land")
 end)
+extra:Button("Max Land", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Max Land") end
+    msg("Dark X","Max Land")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
