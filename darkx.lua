@@ -1090,6 +1090,12 @@ extra:Button("Calm Rukiryaxe", function()
     end
     msg("Dark X","Auto Calm Rukiryaxe")
 end)
+extra:Button("Dupe Power", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Dupe Power To Build With ease")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
