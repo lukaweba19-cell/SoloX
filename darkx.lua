@@ -1702,6 +1702,13 @@ extra:Button("Mod Wood", function()
     if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
     msg("Dark X","click tree")
 end)
+extra:Button("Bring Planks", function()
+    local h=hrp() if not h then return end
+    for i,item in ipairs(getOwned()) do
+        if item.PrimaryPart then item:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4)) end
+    end
+    msg("Dark X","Bring Planks")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
