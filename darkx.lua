@@ -1495,6 +1495,12 @@ extra:Button("Remove Water", function()
     end
     msg("Dark X","Remove Water")
 end)
+extra:Button("Remove Boulders", function()
+    for _,p in pairs(workspace:GetDescendants()) do
+        if p.Name:find("Boulder") or p.Name:find("Rock") then p:Destroy() end
+    end
+    msg("Dark X","Remove Volcano Boulders")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
