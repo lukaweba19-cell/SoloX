@@ -1547,6 +1547,10 @@ extra:Button("Fly", function()
     if h then h.PlatformStand=not h.PlatformStand end
     msg("Dark X","Fly")
 end)
+extra:Button("No Fog", function()
+    Lighting.FogEnd=100000
+    msg("Dark X","Remove Fog")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
