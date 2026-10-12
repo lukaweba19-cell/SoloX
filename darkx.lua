@@ -1022,6 +1022,15 @@ extra:Button("Flip Vehicle", function()
     end
     msg("Dark X","Flip Vehicle")
 end)
+extra:Button("Bring All Plank", function()
+    local h=hrp()
+    if h then
+        for i,item in ipairs(getOwned()) do
+            if item.PrimaryPart then item:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4)) end
+        end
+    end
+    msg("Dark X","Bring All Plank")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
