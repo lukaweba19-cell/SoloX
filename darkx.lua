@@ -1665,6 +1665,10 @@ extra:Button("Day", function()
     Lighting.ClockTime=14
     msg("Dark X","Day")
 end)
+extra:Button("Night", function()
+    Lighting.ClockTime=0
+    msg("Dark X","Night")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
