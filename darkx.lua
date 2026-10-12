@@ -1521,6 +1521,16 @@ extra:Button("Walk Water", function()
     p.Name="WaterWalk" p.Size=Vector3.new(500,1,500) p.Anchored=true p.CanCollide=true p.Transparency=1 p.Position=Vector3.new(0,0,0)
     msg("Dark X","Walk On Water")
 end)
+extra:Button("Tp Player", function()
+    local players=game:GetService("Players"):GetPlayers()
+    if #players>1 then
+        local t=players[2]
+        if t.Character and t.Character:FindFirstChild("HumanoidRootPart") then
+            tp(t.Character.HumanoidRootPart.Position)
+        end
+    end
+    msg("Dark X","Tp to Player")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
