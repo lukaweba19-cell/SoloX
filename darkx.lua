@@ -165,20 +165,40 @@ local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
 axe:Button("Dupe", function() if not getAxe() then msg("Dark X","need axe") return end msg("Dark X","save slot") end)
 axe:Button("Pick Up", function()
-    for _,item in pairs(getOwned()) do
-        local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
-        if r then r:FireServer("Pick up tool") end
+    for _,item in pairs(workspace:GetChildren()) do
+        local owner=item:FindFirstChild("Owner")
+        local tn=item:FindFirstChild("ToolName")
+        if owner and owner.Value==player and tn then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Pick up tool") end
+        end
     end
 end)
 
 -- Build tab
 local buildTab = win:Tab("Build", "0")
 local build = buildTab:section("Base")
-build:Button("Save", function() msg("Dark X","save") end)
+build:Button("Save", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if r then r:InvokeServer(game:GetService("Players"):GetPlayers(), 0) end
+    msg("Dark X","Save Base success")
+end)
 build:Button("Load", function() msg("Dark X","load") end)
 local land = buildTab:section("Land")
 land:Button("Free Land", function() msg("Dark X","free land") end)
 land:Button("Max Land", function() msg("Dark X","max land") end)
+land:Button("Take Down Sold Sign", function()
+    for _,item in pairs(workspace:GetChildren()) do
+        local owner=item:FindFirstChild("Owner")
+        local iname=item:FindFirstChild("ItemName")
+        if owner and owner.Value==player and iname then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Take down sold sign") end
+        end
+    end
+    msg("Dark X","Take down sold sign")
+end)
 
 -- World tab
 local worldTab = win:Tab("World", "0")
