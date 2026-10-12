@@ -1683,6 +1683,9 @@ extra:Button("Flip", function()
     end
     msg("Dark X","Flip")
 end)
+extra:Button("Select", function()
+    msg("Dark X","Select")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
