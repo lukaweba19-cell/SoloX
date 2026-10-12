@@ -1224,6 +1224,15 @@ extra:Button("Sell Sold Sign", function()
     end
     msg("Dark X","Sell Sold Sign")
 end)
+extra:Button("Vehicle Speed", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            local bv=v.PrimaryPart:FindFirstChild("BodyVelocity") or Instance.new("BodyVelocity",v.PrimaryPart)
+            bv.Velocity=Vector3.new(0,0,50)
+        end
+    end
+    msg("Dark X","Vehicle Speed")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
