@@ -95,6 +95,13 @@ woodActions:Button("Bring All Plank", function()
         end
     end
 end)
+woodActions:Button("Sell All Tree", function()
+    for _,t in pairs(getTrees()) do
+        local r=t:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Sell") end
+    end
+    msg("Dark X","Sell All Tree")
+end)
 woodActions:Button("Bring All", function()
     local h=hrp() if not h then return end
     for i,t in ipairs(getTrees()) do if t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%4)*6,0,-10)) end end
