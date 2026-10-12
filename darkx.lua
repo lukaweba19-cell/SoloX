@@ -1,12 +1,13 @@
 -- Dark X
 return function(library)
+local ok, err = pcall(function()
 
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local UIS = game:GetService("UserInputService")
 local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
-local Remote = RS:WaitForChild("Interaction"):WaitForChild("RemoteProxy")
+local Remote = nil
 
 local S = {autoFarm=false, autoChop=false, autoBuy=false, selectedTree=nil, selectedSawmill=nil, selectedWood=nil, woodColor=nil}
 
@@ -229,5 +230,9 @@ for name, pos in pairs(locs) do
     tpSec:Button(name, function() tp(pos) end)
 end
 
-print("Dark X SoloX loaded")
+task.spawn(function()
+    Remote = RS:WaitForChild("Interaction", 10)
+    if Remote then Remote = Remote:WaitForChild("RemoteProxy", 10) end
+end)
+print("Dark X loaded")
 end
