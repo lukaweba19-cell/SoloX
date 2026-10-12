@@ -1374,6 +1374,11 @@ extra:Button("Bring All Plank", function()
     end
     msg("Dark X","Bring All Plank")
 end)
+extra:Button("Cut Tree Joints", function()
+    if not S.selectedTree then msg("Dark X","select wood first") return end
+    chop(S.selectedTree)
+    msg("Dark X","cut done")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
