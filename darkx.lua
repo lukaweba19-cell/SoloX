@@ -1096,6 +1096,12 @@ extra:Button("Dupe Power", function()
     if rf then rf:InvokeServer() end
     msg("Dark X","Dupe Power To Build With ease")
 end)
+extra:Button("Slot Save", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Slot saved successfully")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
