@@ -1475,6 +1475,20 @@ extra:Button("Get Blueprint", function()
     if re then re:FireServer("Open box") end
     msg("Dark X","Open box")
 end)
+extra:Button("Auto Buy", function()
+    S.autoBuy=not S.autoBuy
+    msg("Dark X", S.autoBuy and "Auto Buy on" or "off")
+    if S.autoBuy then
+        task.spawn(function()
+            while S.autoBuy do
+                local rs=game:GetService("ReplicatedStorage")
+                local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                if re then re:FireServer("Buy") end
+                task.wait(1)
+            end
+        end)
+    end
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
