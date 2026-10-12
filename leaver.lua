@@ -105,6 +105,28 @@ gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = game:GetService("CoreGui")
 
+local openBtn = Instance.new("TextButton")
+openBtn.Name = "Open"
+openBtn.Parent = gui
+openBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+openBtn.BorderSizePixel = 0
+openBtn.Position = UDim2.new(0, 12, 0.5, -16)
+openBtn.Size = UDim2.new(0, 70, 0, 32)
+openBtn.Font = Enum.Font.GothamMedium
+openBtn.Text = "CLOSE"
+openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+openBtn.TextSize = 13
+openBtn.ZIndex = 10
+
+local openC = Instance.new("UICorner")
+openC.CornerRadius = UDim.new(0, 6)
+openC.Parent = openBtn
+
+local openStroke = Instance.new("UIStroke")
+openStroke.Color = Color3.fromRGB(50, 50, 60)
+openStroke.Thickness = 1
+openStroke.Parent = openBtn
+
 local main = Instance.new("Frame")
 main.Name = "Main"
 main.Parent = gui
@@ -227,6 +249,16 @@ end
 makeBtn("Turn Save Off", leaveWithoutSave)
 makeBtn("Leave Now", leaveNow)
 
+local function toggle()
+    minimized = not minimized
+    local target = minimized and UDim2.new(0, 0, 0, 0) or UDim2.new(0, 280, 0, 180)
+    TweenService:Create(main, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = target}):Play()
+    openBtn.Text = minimized and "OPEN" or "CLOSE"
+end
+
+openBtn.MouseButton1Click:Connect(toggle)
+
 drag(main, top)
+drag(openBtn, openBtn)
 
 print("Leaver loaded")
