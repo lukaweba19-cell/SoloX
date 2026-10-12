@@ -974,6 +974,20 @@ extra:Button("Get Blueprint Tool", function()
     if re then re:FireServer("Open box") end
     msg("Dark X","Get Blueprint Tool")
 end)
+extra:Button("Max Settings", function()
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    for _,v in pairs(S.selectedSawmill:GetDescendants()) do
+        if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end
+    end
+    msg("Dark X","Max Sawmill Settings")
+end)
+extra:Button("Min Settings", function()
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    for _,v in pairs(S.selectedSawmill:GetDescendants()) do
+        if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end
+    end
+    msg("Dark X","Lowest Sawmill Settings")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
