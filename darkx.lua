@@ -1379,6 +1379,15 @@ extra:Button("Cut Tree Joints", function()
     chop(S.selectedTree)
     msg("Dark X","cut done")
 end)
+extra:Button("Find Spooky Wood", function()
+    for _,t in pairs(getTrees()) do
+        if t:FindFirstChild("TreeClass") and tostring(t.TreeClass.Value):find("Spooky") then
+            local h=hrp()
+            if h and t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) msg("Dark X","Found Spooky") return end
+        end
+    end
+    msg("Dark X","Not Found Phantom Tree")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
