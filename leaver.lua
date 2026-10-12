@@ -64,11 +64,17 @@ local function leaveNow()
         end
         if #servers > 0 then
             TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], player)
+            task.wait()
+            local ping = RS:FindFirstChild("TestPing")
+            if ping then ping:InvokeServer() end
             msg("leaving...")
             return
         end
     end
     TeleportService:Teleport(game.PlaceId, player)
+    task.wait()
+    local ping = RS:FindFirstChild("TestPing")
+    if ping then ping:InvokeServer() end
     msg("leaving...")
 end
 
