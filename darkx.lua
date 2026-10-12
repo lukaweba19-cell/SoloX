@@ -1686,6 +1686,10 @@ end)
 extra:Button("Select", function()
     msg("Dark X","Select")
 end)
+extra:Button("Dupe", function()
+    if not getAxe() then msg("Dark X","need axe") return end
+    msg("Dark X","Dupe")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
