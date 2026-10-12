@@ -347,6 +347,21 @@ land:Button("Land Art", function()
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
     if r then r:FireServer("Land Art") end
 end)
+land:Button("Auto Farm Sold Sign", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("ItemName") then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Take down sold sign") end
+        end
+    end
+    msg("Dark X","Auto Farm Sold Sign")
+end)
+land:Button("Sold Sign Dupe", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Sold Sign Dupe") end
+    msg("Dark X","Sold Sign Dupe")
+end)
 land:Button("Stand Plank", function()
     for _,item in pairs(getOwned()) do
         if item.PrimaryPart then item.PrimaryPart.Anchored=true end
