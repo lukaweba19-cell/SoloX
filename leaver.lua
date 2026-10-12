@@ -46,35 +46,27 @@ end
 
 local function leaveNow()
     local req = request or (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
-    if not req then msg("no request") return end
-    local ok, res = pcall(function()
-        return req({
-            Url = string.format("https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=Asc&limit=100", game.PlaceId),
-            Method = "GET"
-        })
-    end)
-    if not ok or not res or not res.Body then msg("request failed") return end
-    local ok2, data = pcall(function() return HttpService:JSONDecode(res.Body) end)
-    if ok2 and data and data.data and #data.data > 0 then
-        local servers = {}
+    if not req then return end
+    local url = string.format("https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=Asc&limit=100", game.PlaceId)
+    local res = req(url)
+    local data = game:GetService("HttpService"):JSONDecode(res.Body)
+    local serverId
+    if data and data.data then
         for _, s in pairs(data.data) do
-            if s.id ~= game.JobId and s.playing < s.maxPlayers then
-                table.insert(servers, s.id)
+            if s.playing < (s.maxPlayers - 2) and s.id ~= game.JobId then
+                serverId = s.id
+                break
             end
         end
-        if #servers > 0 then
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], player)
-            task.wait()
-            local ping = RS:FindFirstChild("TestPing")
-            if ping then ping:InvokeServer() end
-            msg("leaving...")
-            return
-        end
     end
-    TeleportService:Teleport(game.PlaceId, player)
+    if serverId then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverId, player)
+    end
     task.wait()
-    local ping = RS:FindFirstChild("TestPing")
+    while not game:GetService("Players"):FindFirstChild(player.Name) do task.wait() end
+    local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
     if ping then ping:InvokeServer() end
+    player:Destroy()
     msg("leaving...")
 end
 
