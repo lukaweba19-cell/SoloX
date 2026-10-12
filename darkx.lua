@@ -1589,6 +1589,11 @@ extra:Button("Bring All", function()
     for i,t in ipairs(getTrees()) do if t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%4)*6,0,-10)) end end
     msg("Dark X","Bring All Tree")
 end)
+extra:Button("Auto Chop", function()
+    S.autoChop=not S.autoChop
+    msg("Dark X", S.autoChop and "Auto Chop on" or "off")
+    if S.autoChop then task.spawn(function() while S.autoChop do local h=hrp() if h then for _,t in pairs(getTrees()) do if not S.autoChop then break end if t.PrimaryPart and (t.PrimaryPart.Position-h.Position).Magnitude<60 then chop(t) end end end task.wait(1) end end) end
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
