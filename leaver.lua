@@ -45,22 +45,25 @@ local function msg(text)
 end
 
 local function leaveNow()
-    local hopped = false
-    pcall(function()
-        local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100"
-        local body = game:HttpGet(url)
-        local data = game:GetService("HttpService"):JSONDecode(body)
-        if data and data.data then
-            for _, s in pairs(data.data) do
-                if s.playing and s.maxPlayers and tonumber(s.maxPlayers) > tonumber(s.playing) and s.id ~= game.JobId then
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, s.id, player)
-                    hopped = true
-                    break
-                end
+    local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100"
+    local body = game:HttpGet(url)
+    local data = game:GetService("HttpService"):JSONDecode(body)
+    local serverId
+    if data and data.data then
+        for _, s in pairs(data.data) do
+            if s.playing and s.maxPlayers and s.playing < (s.maxPlayers - 2) and s.id ~= game.JobId then
+                serverId = s.id
+                break
             end
         end
-    end)
-    if hopped then task.wait(4) end
+    end
+    if serverId then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverId, player)
+    end
+    task.wait()
+    while not game:GetService("Players"):FindFirstChild(player.Name) do task.wait() end
+    local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
+    if ping then ping:InvokeServer() end
     player:Destroy()
     msg("leaving...")
 end
