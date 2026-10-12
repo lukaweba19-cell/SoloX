@@ -79,10 +79,9 @@ local function leaveNow()
 end
 
 local function turnSaveOff()
-    local data = player:FindFirstChild("PlayerData") or player:FindFirstChild("Data")
-    if not data then msg("no player data") return end
-    local slot = data:FindFirstChild("CurrentSaveSlot")
-    local saving = data:FindFirstChild("CurrentlySavingOrLoading")
+    local slot = player:FindFirstChild("CurrentSaveSlot")
+    local saving = player:FindFirstChild("CurrentlySavingOrLoading")
+    if not slot then msg("no save slot") return end
     if saving then
         while saving.Value do task.wait() end
     end
@@ -94,7 +93,7 @@ local function turnSaveOff()
     if not donate then msg("no donate") return end
     local players = Players:GetPlayers()
     local target = #players >= 2 and players[2] or players[1]
-    local slotVal = slot and slot.Value or 1
+    local slotVal = slot.Value
     local ok, err = pcall(function()
         donate:InvokeServer(target, 0, slotVal)
     end)
