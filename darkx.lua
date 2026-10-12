@@ -84,6 +84,17 @@ woodActions:Button("Sell Plank", function()
     end
     msg("Dark X","click to sell plank")
 end)
+woodActions:Button("Bring All Plank", function()
+    local h=hrp()
+    if not h then return end
+    local i=0
+    for _,item in pairs(getOwned()) do
+        if item.PrimaryPart then
+            item:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%5)*4,2,-8-math.floor(i/5)*4))
+            i=i+1
+        end
+    end
+end)
 woodActions:Button("Bring All", function()
     local h=hrp() if not h then return end
     for i,t in ipairs(getTrees()) do if t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%4)*6,0,-10)) end end
@@ -207,6 +218,22 @@ saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.select
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
 local axe = axeTab:section("Axe")
+axe:Button("Auto Pick Up", function()
+    task.spawn(function()
+        while true do
+            for _,item in pairs(workspace:GetChildren()) do
+                local owner=item:FindFirstChild("Owner")
+                local tn=item:FindFirstChild("ToolName")
+                if owner and owner.Value==player and tn then
+                    local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+                    if r then r:FireServer("Pick up tool") end
+                end
+            end
+            task.wait(2)
+        end
+    end)
+    msg("Dark X","Auto Pick Up Axe")
+end)
 axe:Button("Select Axe", function()
     local axe=getAxe()
     if axe then S.selectedAxe=axe msg("Dark X","Select the Axe") else msg("Dark X","need axe") end
