@@ -1331,6 +1331,17 @@ extra:Button("Min Settings", function()
     end
     msg("Dark X","Lowest Sawmill Settings")
 end)
+extra:Button("Auto Pick Up", function()
+    for _,item in pairs(workspace:GetChildren()) do
+        local owner=item:FindFirstChild("Owner")
+        local tn=item:FindFirstChild("ToolName")
+        if owner and owner.Value==player and tn then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Pick up tool") end
+        end
+    end
+    msg("Dark X","Auto Pick Up Axe")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
