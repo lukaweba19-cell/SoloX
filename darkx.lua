@@ -291,7 +291,15 @@ build:Button("Save", function()
     if r then r:InvokeServer(game:GetService("Players"):GetPlayers(), 0) end
     msg("Dark X","Save Base success")
 end)
-build:Button("Load", function() msg("Dark X","load") end)
+build:Button("Load", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then
+        local ok=rf:InvokeServer()
+        if not ok then msg("Dark X","Load is on cooldown. Waiting...") return end
+    end
+    msg("Dark X","Load Base")
+end)
 build:Button("Loop Auto Buy", function()
     local rs=game:GetService("ReplicatedStorage")
     local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
