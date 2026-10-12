@@ -1424,6 +1424,13 @@ extra:Button("Sell Plank", function()
     end
     msg("Dark X","click to sell plank")
 end)
+extra:Button("Sell All Tree", function()
+    for _,t in pairs(getTrees()) do
+        local r=t:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Sell") end
+    end
+    msg("Dark X","Sell All Tree")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
