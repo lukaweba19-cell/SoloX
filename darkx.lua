@@ -60,9 +60,8 @@ local locs = {
     ["Bobs Shack"]=Vector3.new(292,8,-2544),["Ski Lodge"]=Vector3.new(1244,59,2290),
 }
 
-local colors = {Pine=Color3.fromRGB(163,162,165),Fir=Color3.fromRGB(86,66,54),Birch=Color3.fromRGB(255,255,255),
-    ["Lime green"]=Color3.fromRGB(0,255,0),["Dark red"]=Color3.fromRGB(140,0,0),["Really red"]=Color3.fromRGB(255,0,0),
-    ["Deep blue"]=Color3.fromRGB(0,0,140),["Dark grey"]=Color3.fromRGB(50,50,50)}
+local woodTypes = {"Pine","Fir","Birch","Oak","Koa","Palm","Cherry","Walnut","Spooky","Fur Wood","Maple","Cedar","Elm","Ash","Mahogany"}
+local colors = {Pine=Color3.fromRGB(163,162,165),Fir=Color3.fromRGB(86,66,54),Birch=Color3.fromRGB(255,255,255),Oak=Color3.fromRGB(139,90,43),Koa=Color3.fromRGB(101,67,33),Palm=Color3.fromRGB(194,178,128),Cherry=Color3.fromRGB(128,0,0),Walnut=Color3.fromRGB(92,64,51),Spooky=Color3.fromRGB(50,0,50),["Fur Wood"]=Color3.fromRGB(139,69,19)}
 
 local win = library:new("Dark X")
 
@@ -97,6 +96,8 @@ woodActions:Button("Mod Wood", function()
     for _,p in pairs(S.selectedWood:GetDescendants()) do if p:IsA("BasePart") and (p.Name=="BuildDependentWood" or p.Name=="Main") then p.Color=S.woodColor end end
 end)
 
+local woodTypes_sec = woodTab:section("Wood Types")
+for _,w in ipairs(woodTypes) do woodTypes_sec:Button(w, function() S.selectedWoodType=w msg("Dark X",w) end) end
 local woodColors = woodTab:section("Colors")
 for n,c in pairs(colors) do woodColors:Button(n, function() S.woodColor=c msg("Dark X",n) end) end
 
@@ -133,8 +134,12 @@ land:Button("Max Land", function() msg("Dark X","max land") end)
 -- World tab
 local worldTab = win:Tab("World", "0")
 local world = worldTab:section("World")
-world:Button("Day", function() Lighting.ClockTime=14 end)
-world:Button("Night", function() Lighting.ClockTime=0 end)
+world:Toggle("Always Day", false, function(s)
+    if s then task.spawn(function() while s do Lighting.ClockTime=14 task.wait(1) end end) end
+end)
+world:Toggle("Always Night", false, function(s)
+    if s then task.spawn(function() while s do Lighting.ClockTime=0 task.wait(1) end end) end
+end)
 world:Button("No Fog", function() Lighting.FogEnd=100000 end)
 local playerSec = worldTab:section("Player")
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
