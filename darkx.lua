@@ -1737,6 +1737,12 @@ extra:Button("Slot", function()
     if rf then rf:InvokeServer() end
     msg("Dark X","Slot")
 end)
+extra:Button("Power", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Power")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
