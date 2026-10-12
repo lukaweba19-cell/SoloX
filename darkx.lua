@@ -1630,6 +1630,17 @@ extra:Button("Dupe Axe", function()
     if rf then rf:InvokeServer() end
     msg("Dark X","now u can save the slot")
 end)
+extra:Button("Pick Up Axe", function()
+    for _,item in pairs(workspace:GetChildren()) do
+        local owner=item:FindFirstChild("Owner")
+        local tn=item:FindFirstChild("ToolName")
+        if owner and owner.Value==player and tn then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Pick up tool") end
+        end
+    end
+    msg("Dark X","Pick up tool")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
