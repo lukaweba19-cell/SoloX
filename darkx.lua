@@ -244,6 +244,12 @@ axe:Button("Dupe Power", function()
     if r then r:InvokeServer() end
     msg("Dark X","Dupe Power To Build With ease")
 end)
+axe:Button("Endtimes Check", function()
+    local axe=getAxe()
+    if not axe then msg("Dark X","you need a axe") return end
+    if not axe.Name:find("Endtimes") then msg("Dark x","you need a EndtimesAxe") return end
+    msg("Dark X","Endtimes ok")
+end)
 axe:Button("Calm Rukiryaxe", function()
     local axe=getAxe()
     if not axe then msg("Dark X","need axe") return end
@@ -300,6 +306,12 @@ build:Button("Select Store", function()
             if t then S.selectedStore=t:FindFirstAncestorOfClass("Model") msg("Dark X","selected") c:Disconnect() end
         end
     end)
+end)
+build:Button("Check Money", function()
+    local ls=player:FindFirstChild("leaderstats")
+    local money=ls and ls:FindFirstChild("Money")
+    if money and money.Value<100 then msg("Dark x","u not have enough money") return end
+    msg("Dark X","money ok")
 end)
 build:Button("Auto Buy", function()
     local rs=game:GetService("ReplicatedStorage")
