@@ -476,6 +476,20 @@ land:Button("Delete", function()
     for _,item in pairs(getOwned()) do item:Destroy() end
     msg("Dark X","click to Delete")
 end)
+land:Button("Auto Buy", function()
+    S.autoBuy=not S.autoBuy
+    msg("Dark X", S.autoBuy and "Auto Buy on" or "off")
+    if S.autoBuy then
+        task.spawn(function()
+            while S.autoBuy do
+                local rs=game:GetService("ReplicatedStorage")
+                local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                if re then re:FireServer("Buy") end
+                task.wait(1)
+            end
+        end)
+    end
+end)
 land:Button("Take Down Sold Sign", function()
     for _,item in pairs(workspace:GetChildren()) do
         local owner=item:FindFirstChild("Owner")
