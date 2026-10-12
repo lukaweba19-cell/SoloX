@@ -1176,6 +1176,12 @@ extra:Button("Get All Blueprint", function()
     if re then re:FireServer("Get All blueprint") end
     msg("Dark X","Get All blueprint")
 end)
+extra:Button("Fill All", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Fill All blueprint") end
+    msg("Dark X","Fill All blueprint")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
