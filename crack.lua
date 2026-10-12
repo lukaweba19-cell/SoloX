@@ -1,3 +1,14 @@
+local dumps = {}
+
+local oldLoad
+oldLoad = hookfunction(loadstring, function(src, ...)
+    if type(src) == "string" and #src > 50 then
+        table.insert(dumps, src)
+        writefile("dump_" .. #dumps .. ".txt", src)
+    end
+    return oldLoad(src, ...)
+end)
+
 local oldRand; oldRand = hookfunction(math.random, function(min, max)
     if checkcaller() then
 	-- 🤣 BREAK HIS CHATGPT ENCODING 🤣 --
