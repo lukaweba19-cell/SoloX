@@ -1723,6 +1723,14 @@ extra:Button("Find Spooky", function()
     end
     msg("Dark X","Not Found Phantom Tree")
 end)
+extra:Button("Calm", function()
+    local axe=getAxe()
+    if axe and axe.Name:find("Rukiryaxe") then
+        local r=axe:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Calm") end
+    end
+    msg("Dark X","Calm")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
