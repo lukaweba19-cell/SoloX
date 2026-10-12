@@ -1130,6 +1130,12 @@ extra:Button("Fast Load", function()
     if rf then rf:InvokeServer() end
     msg("Dark X","Fast Load")
 end)
+extra:Button("Anti BlackList", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Anti BlackList") end
+    msg("Dark X","Anti BlackList")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
