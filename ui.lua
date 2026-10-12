@@ -130,7 +130,7 @@ function library:new(Name)
     Title.Position = UDim2.new(0, 40, 0, 0)
     Title.Size = UDim2.new(0, 180, 1, 0)
     Title.Font = Enum.Font.GothamBold
-    Title.Text = "SoloX v2"
+    Title.Text = "SoloX"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 15
     Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -141,7 +141,7 @@ function library:new(Name)
     Sub.Position = UDim2.new(0, 95, 0, 0)
     Sub.Size = UDim2.new(0, 130, 1, 0)
     Sub.Font = Enum.Font.Gotham
-    Sub.Text = "by Solodolosouls • NEW"
+    Sub.Text = "by Solodolosouls"
     Sub.TextColor3 = Color3.fromRGB(160, 160, 175)
     Sub.TextSize = 11
     Sub.TextXAlignment = Enum.TextXAlignment.Left
@@ -657,6 +657,64 @@ function library:new(Name)
     end
 
     return Tabs
+end
+
+-- Config System
+local HttpService = game:GetService("HttpService")
+
+function library:SaveConfig(name)
+    name = name or "default"
+    local path = "SoloX_Configs/" .. name .. ".json"
+    local success, encoded = pcall(function()
+        return HttpService:JSONEncode(library.flags)
+    end)
+    if success then
+        if not isfolder("SoloX_Configs") then
+            makefolder("SoloX_Configs")
+        end
+        writefile(path, encoded)
+        return true
+    end
+    return false
+end
+
+function library:LoadConfig(name)
+    name = name or "default"
+    local path = "SoloX_Configs/" .. name .. ".json"
+    if not isfile(path) then return false end
+    local content = readfile(path)
+    local success, data = pcall(function()
+        return HttpService:JSONDecode(content)
+    end)
+    if success and type(data) == "table" then
+        for k, v in pairs(data) do
+            library.flags[k] = v
+        end
+        return true
+    end
+    return false
+end
+
+function library:GetConfigs()
+    local configs = {}
+    if isfolder("SoloX_Configs") then
+        for _, file in ipairs(listfiles("SoloX_Configs")) do
+            if file:match("%.json$") then
+                local name = file:match("([^/\\]+)%.json$")
+                if name then table.insert(configs, name) end
+            end
+        end
+    end
+    return configs
+end
+
+function library:DeleteConfig(name)
+    local path = "SoloX_Configs/" .. name .. ".json"
+    if isfile(path) then
+        delfile(path)
+        return true
+    end
+    return false
 end
 
 return library
