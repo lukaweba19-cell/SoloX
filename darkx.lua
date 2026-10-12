@@ -1081,6 +1081,15 @@ extra:Button("Sell Plank", function()
     end
     msg("Dark X","click to sell plank")
 end)
+extra:Button("Calm Rukiryaxe", function()
+    local axe=getAxe()
+    if not axe then msg("Dark X","need axe") return end
+    if axe.Name:find("Rukiryaxe") then
+        local r=axe:FindFirstChildWhichIsA("RemoteEvent",true)
+        if r then r:FireServer("Calm") end
+    end
+    msg("Dark X","Auto Calm Rukiryaxe")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
