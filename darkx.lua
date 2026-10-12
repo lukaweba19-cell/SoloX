@@ -1551,6 +1551,10 @@ extra:Button("No Fog", function()
     Lighting.FogEnd=100000
     msg("Dark X","Remove Fog")
 end)
+extra:Button("Always Day", function()
+    task.spawn(function() while true do Lighting.ClockTime=14 task.wait(1) end end)
+    msg("Dark X","Always Day")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
