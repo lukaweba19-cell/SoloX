@@ -1460,6 +1460,15 @@ extra:Button("Save Base", function()
     if rf then rf:InvokeServer(game:GetService("Players"):GetPlayers(),0) end
     msg("Dark X","Save Base success")
 end)
+extra:Button("Load Base", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then
+        local ok=rf:InvokeServer()
+        if not ok then msg("Dark X","Load is on cooldown. Waiting...") return end
+    end
+    msg("Dark X","Load Base")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
