@@ -268,8 +268,23 @@ build:Button("Open Box", function()
     msg("Dark X","Open box")
 end)
 local land = buildTab:section("Land")
-land:Button("Free Land", function() msg("Dark X","free land") end)
-land:Button("Max Land", function() msg("Dark X","max land") end)
+land:Button("Free Land", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Free Land") end
+    msg("Dark X","Free Land")
+end)
+land:Button("Max Land", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Max Land") end
+    msg("Dark X","Max Land")
+end)
+land:Button("Land Art", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local r=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if r then r:FireServer("Land Art") end
+end)
 land:Button("Stand Plank", function()
     for _,item in pairs(getOwned()) do
         if item.PrimaryPart then item.PrimaryPart.Anchored=true end
@@ -352,6 +367,23 @@ playerSec:Button("Safe Death", function()
     if h then h.Health=h.MaxHealth end
 end)
 playerSec:Button("Fly", function() local h=player.Character and player.Character:FindFirstChildOfClass("Humanoid") if h then h.PlatformStand=not h.PlatformStand end end)
+playerSec:Button("Flip Vehicle", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            v:SetPrimaryPartCFrame(v.PrimaryPart.CFrame * CFrame.Angles(math.pi,0,0))
+        end
+    end
+    msg("Dark X","Flip Vehicle")
+end)
+playerSec:Button("Vehicle Speed", function()
+    for _,v in pairs(workspace:GetChildren()) do
+        if v:FindFirstChild("Owner") and v.Owner.Value==player and v.PrimaryPart then
+            local bv=Instance.new("BodyVelocity",v.PrimaryPart)
+            bv.Velocity=Vector3.new(0,0,80)
+            task.delay(2, function() bv:Destroy() end)
+        end
+    end
+end)
 playerSec:Button("Spawn Vehicle", function()
     msg("Dark X","Click a spawn pad")
     local c c=UIS.InputBegan:Connect(function(i)
