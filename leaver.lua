@@ -81,14 +81,21 @@ end
 local function turnSaveOff()
     local slot = player:FindFirstChild("CurrentSaveSlot", true)
     local saving = player:FindFirstChild("CurrentlySavingOrLoading", true)
+    local slottoload = getgenv().slottoload or (slot and slot.Value) or 1
+    local loadslot = getgenv().loadslot
+    if slot and slot.Value ~= slottoload and loadslot then
+        loadslot(slottoload)
+        task.wait()
+    end
     if saving then
         while saving.Value do task.wait() end
     end
-    local donate = RS:FindFirstChild("Transactions") and RS.Transactions:FindFirstChild("ClientToServer") and RS.Transactions.ClientToServer:FindFirstChild("Donate")
-    if donate and slot then
-        local players = Players:GetPlayers()
-        local target = #players >= 2 and players[2] or players[1]
-        pcall(function() donate:InvokeServer(target, 0, slot.Value) end)
+    local donate = game:GetService("ReplicatedStorage"):FindFirstChild("Transactions")
+    if donate then donate = donate:FindFirstChild("ClientToServer") end
+    if donate then donate = donate:FindFirstChild("Donate") end
+    if donate then
+        local players = game:GetService("Players"):GetPlayers()
+        donate:InvokeServer(players[2], 0, slottoload)
     end
     msg("save turned off")
     local startMin = os.date("*t").min
