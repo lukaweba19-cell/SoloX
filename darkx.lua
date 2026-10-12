@@ -1709,6 +1709,11 @@ extra:Button("Bring Planks", function()
     end
     msg("Dark X","Bring Planks")
 end)
+extra:Button("Cut Joints", function()
+    if not S.selectedTree then msg("Dark X","select wood first") return end
+    chop(S.selectedTree)
+    msg("Dark X","cut done")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
