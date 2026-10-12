@@ -1697,6 +1697,11 @@ extra:Button("Pick Up", function()
     end
     msg("Dark X","Pick Up")
 end)
+extra:Button("Mod Wood", function()
+    if not getAxe() then msg("Dark X","u need an axe") return end
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    msg("Dark X","click tree")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
