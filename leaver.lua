@@ -45,37 +45,10 @@ local function msg(text)
 end
 
 local function leaveNow()
-    local url = string.format("https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=Asc&limit=100", game.PlaceId)
-    local body
-    local ok, res = pcall(function() return game:HttpGet(url) end)
-    if ok and res then
-        body = res
-    else
-        local req = request or (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
-        if req then
-            ok, res = pcall(function() return req({Url = url, Method = "GET"}) end)
-            if not ok then ok, res = pcall(function() return req(url) end) end
-            if ok and res then body = res.Body or res end
-        end
-    end
-    if not body then return end
-    local data = game:GetService("HttpService"):JSONDecode(body)
-    local serverId
-    if data and data.data then
-        for _, s in pairs(data.data) do
-            if s.playing < (s.maxPlayers - 2) and s.id ~= game.JobId then
-                serverId = s.id
-                break
-            end
-        end
-    end
-    if serverId then
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, serverId, player)
-    end
-    task.wait()
-    while not game:GetService("Players"):FindFirstChild(player.Name) do task.wait() end
-    local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
-    if ping then ping:InvokeServer() end
+    pcall(function()
+        local ping = game:GetService("ReplicatedStorage"):FindFirstChild("TestPing")
+        if ping then ping:InvokeServer() end
+    end)
     player:Destroy()
     msg("leaving...")
 end
