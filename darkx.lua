@@ -1584,6 +1584,11 @@ extra:Button("Bring Tree", function()
     for _,t in pairs(ts) do if t.PrimaryPart then local dd=(t.PrimaryPart.Position-h.Position).Magnitude if dd<d then best,d=t,dd end end end
     if best then S.selectedTree=best local h=hrp() if h and best.PrimaryPart then best:SetPrimaryPartCFrame(h.CFrame*CFrame.new(0,0,-8)) end msg("Dark X","brought") end
 end)
+extra:Button("Bring All", function()
+    local h=hrp() if not h then return end
+    for i,t in ipairs(getTrees()) do if t.PrimaryPart then t:SetPrimaryPartCFrame(h.CFrame*CFrame.new((i%4)*6,0,-10)) end end
+    msg("Dark X","Bring All Tree")
+end)
 extra:Button("Close", function()
     local gui=player.PlayerGui:FindFirstChild("DarkX") or game:GetService("CoreGui"):FindFirstChild("SoloX")
     if gui then gui:Destroy() end
