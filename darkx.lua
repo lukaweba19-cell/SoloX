@@ -217,6 +217,21 @@ saw:Button("Floor2", function()
     msg("Dark X","Floor2")
 end)
 saw:Button("Min", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end end end end)
+saw:Button("Plank Size 1", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("Main") and item.Main:IsA("BasePart") then item.Main.Size=Vector3.new(1,1,1) end
+    end
+    msg("Dark X","Make Selected Plank Size To 1")
+end)
+saw:Button("Sell Plank", function()
+    for _,item in pairs(getOwned()) do
+        if item.Name:find("Plank") or (item:FindFirstChild("ItemName") and tostring(item.ItemName.Value):find("Plank")) then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Sell") end
+        end
+    end
+    msg("Dark X","click to sell plank")
+end)
 
 -- Axe tab
 local axeTab = win:Tab("Axe", "0")
