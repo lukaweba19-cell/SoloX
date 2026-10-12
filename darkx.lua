@@ -1431,6 +1431,17 @@ extra:Button("Sell All Tree", function()
     end
     msg("Dark X","Sell All Tree")
 end)
+extra:Button("Take Down Sold Sign", function()
+    for _,item in pairs(workspace:GetChildren()) do
+        local owner=item:FindFirstChild("Owner")
+        local iname=item:FindFirstChild("ItemName")
+        if owner and owner.Value==player and iname then
+            local r=item:FindFirstChild("ButtonRemote_Toggle") or item:FindFirstChildWhichIsA("RemoteEvent",true)
+            if r then r:FireServer("Take down sold sign") end
+        end
+    end
+    msg("Dark X","Take down sold sign")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
