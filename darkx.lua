@@ -1146,6 +1146,12 @@ end)
 extra:Button("Hard Dragger", function()
     msg("Dark X","Hard Dragger on")
 end)
+extra:Button("Auto Filler", function()
+    msg("Dark X","Auto Filler")
+    local rs=game:GetService("ReplicatedStorage")
+    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+    if re then re:FireServer("Fill") end
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
