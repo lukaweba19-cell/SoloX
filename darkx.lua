@@ -751,6 +751,22 @@ extra:Button("Check Money", function()
         if m then msg("Dark X",tostring(m.Value)) end
     end
 end)
+extra:Button("Leave", function()
+    game:GetService("TeleportService"):Teleport(game.PlaceId, player)
+    msg("Dark X","Leave without save")
+end)
+extra:Button("Deload", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Deload(no load cooldown)")
+end)
+extra:Button("Fast Load", function()
+    local rs=game:GetService("ReplicatedStorage")
+    local rf=rs:FindFirstChildWhichIsA("RemoteFunction",true)
+    if rf then rf:InvokeServer() end
+    msg("Dark X","Fast Load")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
