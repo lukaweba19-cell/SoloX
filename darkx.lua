@@ -1152,6 +1152,24 @@ extra:Button("Auto Filler", function()
     local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
     if re then re:FireServer("Fill") end
 end)
+extra:Button("Click to Fill", function()
+    msg("Dark X","Click to Fill")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then
+                local m=t:FindFirstAncestorOfClass("Model")
+                if m then
+                    local rs=game:GetService("ReplicatedStorage")
+                    local re=rs:FindFirstChildWhichIsA("RemoteEvent",true)
+                    if re then re:FireServer("Fill", m) end
+                    msg("Dark X","filled")
+                    c:Disconnect()
+                end
+            end
+        end
+    end)
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
