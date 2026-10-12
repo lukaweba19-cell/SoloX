@@ -1409,6 +1409,12 @@ extra:Button("Mod Sawmill", function()
     end
     msg("Dark X","Mod Sawmill")
 end)
+extra:Button("Plank Size 1", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("Main") and item.Main:IsA("BasePart") then item.Main.Size=Vector3.new(1,1,1) end
+    end
+    msg("Dark X","Make Selected Plank Size To 1")
+end)
 extra:Button("Abort", function()
     S.autoFarm=false S.autoChop=false S.autoBuy=false
     msg("Dark X","Abort")
