@@ -167,6 +167,26 @@ saw:Button("Select", function()
     local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m.Name:find("Sawmill") then S.selectedSawmill=m msg("Dark X","selected") c:Disconnect() end end end end)
 end)
 saw:Button("Max", function() if S.selectedSawmill then for _,v in pairs(S.selectedSawmill:GetDescendants()) do if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end end end end)
+saw:Button("Max Settings", function()
+    if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
+    for _,v in pairs(S.selectedSawmill:GetDescendants()) do
+        if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=100 end
+    end
+    msg("Dark X","Max Sawmill Settings")
+end)
+saw:Button("Min Settings", function()
+    if not S.selectedSawmill then msg("Dark X","select Sawmail At First") return end
+    for _,v in pairs(S.selectedSawmill:GetDescendants()) do
+        if v:IsA("NumberValue") or v:IsA("IntValue") then v.Value=1 end
+    end
+    msg("Dark X","Lowest Sawmill Settings")
+end)
+saw:Button("Plank Size 1", function()
+    for _,item in pairs(getOwned()) do
+        if item:FindFirstChild("Main") and item.Main:IsA("BasePart") then item.Main.Size=Vector3.new(1,1,1) end
+    end
+    msg("Dark X","Make Selected Plank Size To 1")
+end)
 saw:Button("Floor2", function()
     local has=false
     for _,item in pairs(getOwned()) do if item.Name:find("Floor2") then has=true break end end
