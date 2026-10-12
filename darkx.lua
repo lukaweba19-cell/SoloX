@@ -87,13 +87,22 @@ woodActions:Toggle("Auto Farm", false, function(s)
     S.autoFarm=s
     if s then task.spawn(function() while S.autoFarm do local ts=getTrees() if #ts>0 then bring(ts[1]) task.wait(0.3) chop(ts[1]) end task.wait(2) end end) end
 end)
-woodActions:Button("Select Wood", function()
-    msg("Dark X","click wood")
-    local c c=UIS.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then local t=player:GetMouse().Target if t then local m=t:FindFirstAncestorOfClass("Model") if m and m:FindFirstChild("TreeClass") then S.selectedWood=m msg("Dark X","selected") c:Disconnect() end end end end)
-end)
 woodActions:Button("Mod Wood", function()
-    if not S.selectedWood or not S.woodColor then msg("Dark X","select wood+color") return end
-    for _,p in pairs(S.selectedWood:GetDescendants()) do if p:IsA("BasePart") and (p.Name=="BuildDependentWood" or p.Name=="Main") then p.Color=S.woodColor end end
+    if not S.selectedSawmill then msg("Dark X","select sawmill first") return end
+    msg("Dark X","click tree")
+    local c c=UIS.InputBegan:Connect(function(i)
+        if i.UserInputType==Enum.UserInputType.MouseButton1 then
+            local t=player:GetMouse().Target
+            if t then
+                local m=t:FindFirstAncestorOfClass("Model")
+                if m and m:FindFirstChild("TreeClass") then
+                    S.selectedWood=m
+                    msg("Dark X","wood selected")
+                    c:Disconnect()
+                end
+            end
+        end
+    end)
 end)
 
 local woodTypes_sec = woodTab:section("Wood Types")
